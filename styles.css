@@ -1,3 +1,137 @@
+:root {
+    font-size: 16px;
+    font-family: "Roboto Serif", sans-serif;
+    --text-primary: #b6b6b6;
+    --text-secondary: #ececec;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+    --transition-speed: 600ms;
+}
+
 body {
-    background-color: rgb(23, 29, 29);
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Scrollbar */
+
+body::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track {
+    background: #1e1e24;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #6649b8;
+}
+
+main {
+    margin-left: 5rem;
+    padding: 1rem;
+}
+
+
+/* Navigation bar */
+
+.navbar {
+    position: fixed;
+    background-color: var(--bg-primary);
+    transition: width var(--transition-speed) ease;
+}
+
+.navbar-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar-li {
+    width: 100%;
+}
+
+.navbar-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    filter: grayscale(100%) opacity(0.7);
+    transition: var(--transition-speed) ease;
+}
+
+.navbar-link:hover {
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.link-text {
+    display: none;
+    margin-left: 1rem;
+}
+
+.nav-link svg {
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+
+
+/* Colors */
+
+.fa-primary {
+    color: cadetblue;
+}
+
+.fa-secondary {
+    color: rgb(72, 119, 121);
+}
+
+.fa-primary,
+.fa-secondary {
+    transition: var(--transition-speed);
+}
+
+
+/* Dealing with various screen sizes */
+
+@media only screen and (min-width: 600px) {
+    .navbar {
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+    }
+    .navbar:hover {
+        width: 16rem;
+    }
+    .navbar:hover .link-text {
+        display: inline;
+    }
+    .navbar-li {
+        margin-top: 1rem;
+    }
+}
+
+@media only screen and (max-width:600px) {
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+    }
+    .navbar-ul {
+        flex-direction: row;
+    }
+    .navbar-link {
+        justify-content: center;
+    }
+    main {
+        margin: 0;
+    }
 }
