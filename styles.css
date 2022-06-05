@@ -121,6 +121,9 @@ main {
     .navbar-li {
         margin-top: 2rem;
     }
+    .navbar-li:last-child {
+        margin-top: auto;
+    }
 }
 
 @media only screen and (max-width:760px) {
