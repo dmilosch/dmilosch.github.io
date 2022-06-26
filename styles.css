@@ -1,12 +1,23 @@
 :root {
     font-size: 20px;
     font-family: "Roboto Serif", sans-serif;
-    --text-primary: #b6b6b6;
-    --text-secondary: #ececec;
-    --bg-primary: #23232e;
-    --bg-secondary: #141418;
+    --text-primary: #000000;
+    --text-secondary: #A27B5C;
+    --bg-primary: #3F4E4F;
+    --bg-secondary: #2C3639;
     --transition-speed: 600ms;
+    background: #DCD7C9;
 }
+
+
+/* Playing with some color palettes:
+Coffee:
+    --text-primary: rgb(85, 84, 84);
+    --text-secondary: black;
+    --bg-primary: #D8CCA3;
+    --bg-secondary: #B09B71;
+
+*/
 
 body {
     margin: 0;
@@ -87,11 +98,11 @@ main {
 /* Colors */
 
 .fa-primary {
-    color: cadetblue;
+    color: #D8CCA3;
 }
 
 .fa-secondary {
-    color: rgb(72, 119, 121);
+    color: #B09B71;
 }
 
 .fa-primary,
