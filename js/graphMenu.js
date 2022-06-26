@@ -1,8 +1,11 @@
 // Will contain the main menu
 
-var svg = d3.select("menuGraph"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
+var svg = d3.select("#menuGraph")
+    .append("svg")
+    .attr("width", 960)
+    .attr("height", 600),
+    width = 960,
+    height = 600;
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -11,8 +14,9 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-d3.json("miserables.json", function(error, graph) {
+d3.json("https://miloschewsky.com/json/websiteLayout.json", function(error, graph) {
     if (error) throw error;
+    console.log(graph)
 
     var link = svg.append("g")
         .attr("class", "links")

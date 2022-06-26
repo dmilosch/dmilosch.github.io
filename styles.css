@@ -111,6 +111,19 @@ main {
 }
 
 
+/* Graphs */
+
+.links line {
+    stroke: var(--text-secondary);
+    stroke-opacity: 0.6;
+}
+
+.nodes circle {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+
 /* Dealing with various screen sizes */
 
 @media only screen and (min-width: 760px) {
