@@ -44,6 +44,10 @@ main {
     padding: 1rem;
 }
 
+.main_js {
+    padding: 0rem;
+}
+
 
 /* Navigation bar */
 
@@ -148,6 +152,16 @@ main {
     .navbar-li:last-child {
         margin-top: auto;
     }
+    .svg-container {
+        position: relative;
+        vertical-align: top;
+        overflow: hidden;
+        height: 100%-40px;
+        width: auto;
+    }
+    .svg-content {
+        height: 100%;
+    }
 }
 
 @media only screen and (max-width:760px) {
@@ -164,5 +178,16 @@ main {
     }
     main {
         margin: 0;
+    }
+    .svg-container {
+        position: relative;
+        vertical-align: top;
+        overflow: hidden;
+        width: 100%;
+    }
+    .svg-content {
+        display: inline-block;
+        margin: 5rem 0;
+        left: 0rem;
     }
 }

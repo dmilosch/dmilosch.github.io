@@ -6,16 +6,16 @@
     </script>
     <script>
         $(function() {
-            $("#nav").load("https://miloschewsky.com/html/nav.html");
+            $("#nav").load("./html/nav.html");
         });
     </script>
 </head>
 
 <body>
     <div id="nav"></div>
-    <main>
-        The main page graph will be located here
-        <div id="menuGraph" width="960px" height="600px"></div>
+    <main class="main_js">
+        <div id="container" class="svg-container">
+        </div>
     </main>
     <!-- Doing the main menu script -->
     <script src="https://d3js.org/d3.v4.min.js"></script>

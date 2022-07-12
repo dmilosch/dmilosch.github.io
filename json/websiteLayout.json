@@ -7,10 +7,10 @@
         { "id": "Contact", "group": 5 }
     ],
     "links": [
-        { "source": "Résumé", "target": "Personal", "value": 100 },
+        { "source": "Résumé", "target": "Personal", "value": 10 },
         { "source": "Résumé", "target": "Github", "value": 10 },
-        { "source": "Blog", "target": "Github", "value": 150 },
-        { "source": "Blog", "target": "Contact", "value": 80 },
-        { "source": "Contact", "target": "Personal", "value": 60 }
+        { "source": "Blog", "target": "Github", "value": 10 },
+        { "source": "Blog", "target": "Contact", "value": 10 },
+        { "source": "Contact", "target": "Personal", "value": 10 }
     ]
 }

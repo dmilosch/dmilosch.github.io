@@ -1,17 +1,26 @@
 // Will contain the main menu
 
-var svg = d3.select("#menuGraph")
+// var svg = d3.select("#menuGraph")
+//     .append("svg")
+//     .attr("width", 960)
+//     .attr("height", 600),
+//     width = 960,
+//     height = 600;
+
+var svg = d3.select("div#container")
     .append("svg")
-    .attr("width", 960)
-    .attr("height", 600),
-    width = 960,
-    height = 600;
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 1000 1000")
+    .classed("svg-content", true);
+
+var width = 1000,
+    height = 1000;
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
+    .force("charge", d3.forceManyBody().strength(-5000))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
 d3.json("https://miloschewsky.com/json/websiteLayout.json", function(error, graph) {
@@ -32,7 +41,7 @@ d3.json("https://miloschewsky.com/json/websiteLayout.json", function(error, grap
         .enter().append("g")
 
     var circles = node.append("circle")
-        .attr("r", 5)
+        .attr("r", 15)
         .attr("fill", function(d) { return color(d.group); });
 
     // Create a drag handler and append it to the node object instead
@@ -47,8 +56,8 @@ d3.json("https://miloschewsky.com/json/websiteLayout.json", function(error, grap
         .text(function(d) {
             return d.id;
         })
-        .attr('x', 6)
-        .attr('y', 3);
+        .attr('x', 15)
+        .attr('y', 18);
 
     node.append("title")
         .text(function(d) { return d.id; });
