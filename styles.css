@@ -6,15 +6,24 @@ body {
 }
 
 .total{
-	margin-top: 2rem;
-	width: 40rem;
-	margin:auto;
+	margin-top: 0;
+	width: 100%;
+	max-width: 40rem;
+	margin: auto;
+	padding: 4rem 1rem 0;
 }
 
 .header{
 	text-align: center;
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #ffffff;
+	z-index: 1000;
+	padding: 0.5rem 0;
 }
 
 .center {
@@ -50,9 +59,6 @@ a:link, a:visited {
 	color: dimgray;
 }
 
-a:active {
-	
-}
 
 a:hover {
 	background-color:lightgray;
@@ -76,7 +82,7 @@ hr {
 }
 
 h3, h4 { 
-    margin: 0.2rem; /* Removes default margin */ 
+    margin: 0.2rem; 
 	font-size: 1.2rem;
 }
 
@@ -155,3 +161,30 @@ h3, h4 {
     stroke: #000000;
     stroke-width: 1px;
   }
+
+/* --- Mobile adjustments --- */
+@media (max-width: 600px) {
+	body {
+		font-size: 15px;
+		padding: 0 0.5rem;
+	}
+	#content {
+		margin: 1rem 0;
+	}
+	.center {
+		width: 80%;
+		max-width: 15rem;
+	}
+}
+
+.header p {
+	margin: 0.3rem 0 0.8rem;
+}
+
+.header .menu-hr {
+	margin: 0 auto 0.4rem;
+}
+
+.header a {
+	margin: 0 0.4rem;
+}
