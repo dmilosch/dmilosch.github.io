@@ -1,0 +1,32 @@
+{
+  "research": [
+    {
+        "title": "Quantum Computation with Correlated Measurements: Implications for the Complexity Landscape",
+        "authors": [
+            "David Miloschewsky",
+            { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
+        ],
+        "links": {
+          "arXiv": "https://arxiv.org/abs/2507.03692"
+        }
+    },
+    {
+      "title": "New Lower-bounds for Quantum Computation with Non-Collapsing Measurements",
+      "authors": [
+        "David Miloschewsky",
+        { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
+      ],
+      "links": {
+        "arXiv": "https://arxiv.org/abs/2411.04085"
+      },
+      "venue": "Computational Complexity Conference (CCC) 2025"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Complexity Garden",
+      "url": "https://complexitygarden.com",
+      "description": "An interactive website for complexity classes which me and others are building. Feel free to check it out and leave some feedback!"
+    }
+  ]
+} 

@@ -1,5 +1,5 @@
 body {
-	background-color: #FFFFFF/*#D3D3D3*/;
+	background-color: #FFFFFF;
 	font-family: Garamond, serif;
 	font-size: 16px;
 	align-items:center;
@@ -26,16 +26,23 @@ body {
 	padding: 0.5rem 0;
 }
 
+.header p {
+	margin: 0.3rem 0 0.8rem;
+}
+
+.header .menu-hr {
+	margin: 0 auto 0.4rem;
+}
+
+.header a {
+	margin: 0 0.4rem;
+}
+
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
-}
-
-svg{
-	width:480px;
-	height:240px;
 }
 
 img{
@@ -47,11 +54,7 @@ img{
 a{
 	text-decoration: none;
 	color: dimgray;
-	border-bottom-style: none;
-	hyphens: none;
-	transition-property: background;
-    transition-duration: .2s;
-	transition: .5s ease;
+	transition: background 0.2s ease;
 	font-style: normal;
 }
 
@@ -65,8 +68,7 @@ a:hover {
 }
 
 hr {
-	margin-top:1rem;
-	margin-bottom:1rem;
+	margin: 1rem 0;
 }
 
 #title {
@@ -81,22 +83,10 @@ hr {
 	text-align: left;
 }
 
-h3, h4 { 
-    margin: 0.2rem; 
-	font-size: 1.2rem;
-}
-
 #publications {
 	margin-left:1rem;
 	line-height: 1.2;
 	font-size: 1.08rem;
-}
-
-#subheader {
-	margin: 2rem;
-	font-size: 1rem;
-	text-align: center;
-	font-weight: bold;
 }
 
 .inside {
@@ -110,57 +100,6 @@ h3, h4 {
 	background-color: transparent;
 	cursor: pointer;
 }
-
-/* Dropdown button on hover & focus */
-.menu-CSS:hover {
-  background-color: #A9A9A9;
-}
-
-.menu-CSS:focus {
-	background-image: url(file:///C:/Work/Website/miloschewsky.cz/New/menu_close_button.png);
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.drop-content {
-  display: none;
-  position: absolute;
-  background-color:#A9A9A9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.drop-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.drop-content a:hover {background-color: #ddd}
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {display:block;}
-
-/* Graph Setup */
-
-.links line {
-  stroke: #000000;
-  stroke-opacity: 0.6;
-  }
-
-.nodes circle {
-    stroke: #000000;
-    stroke-width: 1px;
-  }
 
 /* --- Mobile adjustments --- */
 @media (max-width: 600px) {
@@ -177,14 +116,8 @@ h3, h4 {
 	}
 }
 
-.header p {
-	margin: 0.3rem 0 0.8rem;
-}
-
-.header .menu-hr {
-	margin: 0 auto 0.4rem;
-}
-
-.header a {
-	margin: 0 0.4rem;
+/* Removed #subheader (unused) and h4 isn't present, but keeping rule just for h3 */
+h3 {
+    margin: 0.2rem;
+    font-size: 1.2rem;
 }
