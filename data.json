@@ -17,9 +17,9 @@
         { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
       ],
       "links": {
-        "arXiv": "https://arxiv.org/abs/2411.04085"
-      },
-      "venue": "Computational Complexity Conference (CCC) 2025"
+        "arXiv": "https://arxiv.org/abs/2411.04085",
+        "Computational Complexity Conference (CCC) 2025": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CCC.2025.12"
+      }
     }
   ],
   "projects": [
