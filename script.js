@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       populateResearch(data.research || []);
       populateProjects(data.projects || []);
+      populateTeaching(data.teaching || []);
     })
     .catch(err => console.error('Error loading JSON data:', err));
 
@@ -88,6 +89,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const p = document.createElement('p');
         p.textContent = item.description;
         li.appendChild(p);
+      }
+
+      ul.appendChild(li);
+    });
+
+    target.appendChild(ul);
+  }
+
+  function populateTeaching(teachingItems) {
+    const target = document.querySelector('#teaching #content');
+    if (!target) return;
+    target.innerHTML = '';
+
+    const ul = document.createElement('ul');
+    teachingItems.forEach(item => {
+      const li = document.createElement('li');
+
+      const semester = document.createElement('strong');
+      semester.textContent = item.semester;
+      li.appendChild(semester);
+
+      li.appendChild(document.createTextNode(' - '));
+
+      const role = document.createElement('span');
+      role.textContent = item.role;
+      li.appendChild(role);
+
+      li.appendChild(document.createTextNode(' - '));
+
+      const course = document.createElement('span');
+      course.textContent = item.course;
+      li.appendChild(course);
+
+      if (item.notes) {
+        const notes = document.createElement('span');
+        notes.textContent = ' ' + item.notes;
+        li.appendChild(notes);
       }
 
       ul.appendChild(li);

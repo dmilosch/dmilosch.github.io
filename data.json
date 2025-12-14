@@ -28,5 +28,18 @@
       "url": "https://complexitygarden.com",
       "description": "An interactive website for complexity classes which me and others are building. Feel free to check it out and leave some feedback!"
     }
+  ],
+  "teaching":[
+    {
+      "semester": "Fall 2023",
+      "role": "Teaching Assistant",
+      "course": "CSE550: Quantum Computing and Applications"
+    },
+    {
+      "semester": "Fall 2025",
+      "role": "Teaching Assistant",
+      "course": "CSE550: Quantum Computing and Applications",
+      "notes": "Included 7 guest lectures"
+    }
   ]
 } 
