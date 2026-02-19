@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (item.description) {
         const p = document.createElement('p');
-        p.textContent = item.description;
+        p.innerHTML = item.description;
         li.appendChild(p);
       }
 
