@@ -3,6 +3,18 @@
     {
         "title": "Quantum Computation with Correlated Measurements: Implications for the Complexity Landscape",
         "authors": [
+            "Thomas Huffstutler", 
+            {"name":"Upendra Kapshikar", "url":"https://www.linkedin.com/in/upendra-kapshikar-86872617a/"},
+            "David Miloschewsky",
+            { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
+        ],
+        "links": {
+          "In Submission": ""
+        }
+    },
+    {
+        "title": "Quantum Computation with Correlated Measurements: Implications for the Complexity Landscape",
+        "authors": [
             "David Miloschewsky",
             { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
         ],
@@ -26,7 +38,7 @@
     {
       "name": "Complexity Garden",
       "url": "https://complexitygarden.com",
-      "description": "An interactive website for complexity classes which me and others are building. Feel free to check it out and leave some feedback!"
+      "description": "An interactive website for complexity classes which me and others are building. Feel free to check it out and leave some feedback! If you would like to contribute, feel free to check our <a href=\"https://github.com/Complexitygarden/complexitygarden.github.io\" target=\"_blank\" rel=\"noopener noreferrer\">website</a> and <a href=\"https://github.com/Complexitygarden/dataset\" target=\"_blank\" rel=\"noopener noreferrer\">data</a> repositories."
     }
   ],
   "teaching":[

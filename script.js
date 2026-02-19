@@ -43,12 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
       // Links (e.g., arXiv, DOI)
       if (item.links && typeof item.links === 'object') {
         Object.entries(item.links).forEach(([name, url]) => {
-          const a = document.createElement('a');
-          a.href = url;
-          a.textContent = name;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          divPub.appendChild(a);
+          if (url) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.textContent = name;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            divPub.appendChild(a);
+          } else {
+            const span = document.createElement('span');
+            span.textContent = name;
+            divPub.appendChild(span);
+          }
           divPub.appendChild(document.createElement('br'));
         });
       }
