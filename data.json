@@ -3,13 +3,13 @@
     {
         "title": "From Promises to Totality: A Framework for Ruling Out Quantum Speedups",
         "authors": [
-            "Thomas Huffstutler", 
+            {"name":"Thomas Huffstutler", "url":"https://thomashuffstutler.com"},
             {"name":"Upendra Kapshikar", "url":"https://www.linkedin.com/in/upendra-kapshikar-86872617a/"},
             "David Miloschewsky",
             { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
         ],
         "links": {
-          "In Submission": ""
+          "arXiv": "https://arxiv.org/abs/2603.29256"
         }
     },
     {
