@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quantum vs. Classical Witness and Advice</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0e1b2c;
+      --panel2:#13253d;
+      --ink:#eef6ff;
+      --muted:#9db2c7;
+      --blue:#79c0ff;
+      --cyan:#74f0ff;
+      --gold:#ffd37a;
+      --green:#96f5b8;
+      --red:#ff8d8d;
+      --line:rgba(255,255,255,.12);
+    }
+    html, body { background: var(--bg); }
+    .reveal { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: var(--ink); }
+    .reveal .slides { text-align: left; }
+    .reveal section { height: auto !important; }
+    .reveal h1,.reveal h2,.reveal h3{ text-transform:none; letter-spacing:-0.03em; margin:0 0 .25em 0; }
+    .reveal h1{ font-size:2.0em; }
+    .reveal h2{ font-size:1.45em; }
+    .reveal h3{ font-size:.9em; color:var(--cyan); }
+    .reveal p, .reveal li { font-size:.66em; line-height:1.28; color:var(--ink); }
+    .reveal ul { margin: .2em 0 0 1.15em; }
+    .reveal li { margin: .22em 0; }
+    .muted{ color:var(--muted); }
+    .shell { width:100%; box-sizing:border-box; padding: .1em 0 .2em; }
+    .subtitle { color:var(--muted); font-size:.58em; margin-bottom:.7em; }
+    .pill{ display:inline-block; border:1px solid var(--line); border-radius:999px; padding:6px 12px; font-size:.36em; color:var(--muted); margin-right:6px; }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start; }
+    .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .panel{ background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:18px; padding:16px 18px; box-sizing:border-box; }
+    .soft{ background:rgba(255,255,255,.03); }
+    .center{ text-align:center; }
+    .big{ font-size:1.05em; line-height:1.18; }
+    .huge{ font-size:1.45em; line-height:1.12; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .small{ font-size:.5em; }
+    .caption{ color:var(--muted); font-size:.46em; margin-top:.5em; }
+    .compare{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:12px; }
+    .compare .panel{ min-height:180px; }
+    .story-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; align-items:stretch; }
+    .story-card{ background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid var(--line); border-radius:22px; padding:18px; min-height:320px; }
+    .story-label{ display:inline-block; font-size:.4em; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 10px; margin-bottom:12px; }
+    .story-visual{ margin:8px 0 14px; }
+    .story-note{ font-size:.58em; color:var(--muted); margin-top:10px; }
+    .story-kicker{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-size:.62em; }
+    .story-svg text{ font-family: Inter, system-ui, sans-serif; }
+    .story-card.centered{ display:flex; flex-direction:column; justify-content:center; min-height:350px; }
+    .story-mini{ font-size:.46em; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+    .class-table{ width:100%; border-collapse:separate; border-spacing:0 14px; margin-top:10px; }
+    .class-table th{ font-size:.5em; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.08em; padding:0 12px 8px; text-align:center; vertical-align:middle; }
+    .class-table td{ padding:0 10px; vertical-align:middle; }
+    .class-name{ width:22%; font-size:.95em; font-weight:700; color:#fff; text-align:center; }
+    .class-cell{ background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:18px; height:92px; text-align:center; }
+    .class-cell svg{ width:100%; height:92px; display:block; }
+    .class-wrap{ height:92px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; }
+    .class-math{ font-size:.95em; color:var(--ink); }
+    .class-sub{ font-size:.46em; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+    .concept-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:22px; align-items:stretch; margin-top:10px; }
+    .concept-card{ background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:22px; padding:18px; }
+    .concept-flow{ display:grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; gap:10px; align-items:center; margin-top:18px; }
+    .concept-node{ min-height:108px; border:1px solid var(--line); border-radius:18px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:12px; }
+    .concept-node.input{ background:rgba(121,192,255,.08); border-color:rgba(121,192,255,.35); }
+    .concept-node.witness{ background:rgba(255,141,141,.08); border-color:rgba(255,141,141,.35); }
+    .concept-node.advice{ background:rgba(150,245,184,.08); border-color:rgba(150,245,184,.35); }
+    .concept-node.machine{ background:rgba(255,211,122,.08); border-color:rgba(255,211,122,.35); }
+    .concept-main{ font-size:.95em; color:var(--ink); }
+    .concept-sub{ font-size:.48em; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:6px; }
+    .concept-arrow{ text-align:center; font-size:1.2em; color:var(--muted); }
+    .concept-footer{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:16px; }
+    .concept-tag{ border-top:1px solid var(--line); padding-top:10px; text-align:center; font-size:.6em; color:var(--muted); }
+    .timeline{ display:grid; grid-template-columns: 108px 1fr; gap:12px 18px; align-items:start; margin-top:8px; }
+    .year{ color:var(--gold); font-weight:700; font-size:.72em; }
+    .step{ display:flex; gap:14px; margin:10px 0; align-items:flex-start; }
+    .num{ width:34px; height:34px; min-width:34px; border-radius:50%; background:rgba(121,192,255,.16); border:1px solid rgba(121,192,255,.4); display:flex; align-items:center; justify-content:center; font-size:.62em; font-weight:700; color:#fff; }
+    .arrow{ font-size:1.2em; color:var(--cyan); text-align:center; }
+    .problem-flow{ display:grid; grid-template-columns: 1.05fr .8fr 1.15fr; gap:16px; align-items:center; }
+    .mini-card{ border:1px solid var(--line); border-radius:16px; padding:12px 14px; background:rgba(255,255,255,.03); }
+    .good{ color:var(--green); }
+    .bad{ color:var(--red); }
+    .gold{ color:var(--gold); }
+    .blue{ color:var(--blue); }
+    .callout{ border-left:4px solid var(--cyan); padding-left:12px; margin-top:8px; }
+    .refs p{ font-size:.48em; line-height:1.22; margin:.2em 0; color:var(--muted); }
+    svg text{ font-family: Inter, system-ui, sans-serif; }
+    .tight p, .tight li { font-size:.61em; }
+
+    .svg-wrap{ background:radial-gradient(circle at 30% 20%, rgba(110,243,255,.10), transparent 35%), rgba(255,255,255,.02); border:1px solid var(--line); border-radius:24px; padding:10px; }
+    .caption{ font-size:.46em; color:var(--muted); text-align:center; margin-top:8px; }
+    .hist-flat{ position:relative; margin-top:22px; height:330px; }
+    .hist-flat:before{ content:""; position:absolute; left:36px; right:36px; top:150px; height:4px; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--cyan)); opacity:.95; }
+    .hist-flat-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:10px; height:100%; position:relative; z-index:2; }
+    .hist-stop{ position:relative; height:100%; }
+    .hist-phrase{ position:absolute; left:50%; top:8px; transform:translateX(-50%); width:150px; text-align:center; font-size:.46em; line-height:1.22; color:var(--ink); }
+    .hist-dot{ position:absolute; left:50%; top:139px; transform:translateX(-50%); width:18px; height:18px; border-radius:50%; background:var(--bg); border:4px solid var(--cyan); box-shadow:0 0 0 5px rgba(110,243,255,.08); }
+    .hist-stop.wit .hist-dot{ border-color:var(--gold); box-shadow:0 0 0 5px rgba(255,217,121,.08); }
+    .hist-below{ position:absolute; left:50%; top:172px; transform:translateX(-50%); width:160px; text-align:center; }
+    .hist-year{ font-size:.44em; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+    .hist-paper{ font-size:.42em; line-height:1.24; color:var(--muted); }
+    .hist-paper strong{ display:block; font-size:1.06em; color:var(--ink); margin-bottom:5px; }
+  </style>
+  <style>
+  .yz-slide-shell{
+    height: 88vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+
+  .yz-derivation{
+    margin-top: 8px;
+    width: 100%;
+    max-width: 1160px;
+  }
+
+  .yz-grid{
+    display:grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    gap:16px;
+    align-items:start;
+    width:100%;
+  }
+
+  .yz-col{
+    background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:14px 14px 12px;
+    min-width:0;
+    box-sizing:border-box;
+  }
+
+  .yz-col h3{
+    margin-bottom:8px;
+    color:var(--cyan);
+    font-size:.74em;
+    line-height:1.15;
+  }
+
+  .yz-tag{
+    display:inline-block;
+    font-size:.37em;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:4px 9px;
+    margin-bottom:10px;
+  }
+
+  .yz-step{
+    border-top:1px solid var(--line);
+    padding-top:10px;
+    margin-top:10px;
+  }
+
+  .yz-step:first-of-type{
+    border-top:none;
+    padding-top:0;
+    margin-top:0;
+  }
+
+  .yz-eq{
+    font-size:.58em;
+    line-height:1.28;
+    margin:.2em 0 .3em 0;
+    overflow-wrap:anywhere;
+  }
+
+  .yz-note{
+    font-size:.49em;
+    color:var(--muted);
+    line-height:1.24;
+  }
+
+  .yz-arrowband{
+    margin:12px 0 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    font-size:.60em;
+    flex-wrap:wrap;
+    text-align:center;
+  }
+
+  .yz-bridge{
+    margin-top:14px;
+    background:linear-gradient(180deg, rgba(116,240,255,.09), rgba(255,255,255,.03));
+    border:1px solid rgba(116,240,255,.28);
+    border-radius:20px;
+    padding:14px 14px;
+    box-sizing:border-box;
+  }
+
+  .yz-bridge-grid{
+    display:grid;
+    grid-template-columns: minmax(0,1fr) 44px minmax(0,1fr);
+    gap:12px;
+    align-items:center;
+    width:100%;
+  }
+
+  .yz-bridge-center{
+    text-align:center;
+    font-size:1em;
+    color:var(--cyan);
+  }
+
+  .yz-box{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:10px 11px;
+    background:rgba(255,255,255,.03);
+    min-width:0;
+    box-sizing:border-box;
+  }
+
+  .yz-box-title{
+    font-size:.41em;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:7px;
+  }
+
+  .eq-left .katex-display{ text-align:left !important; margin:0.15em 0; }
+
+  .yz-bottom{
+    margin-top:10px;
+    text-align:center;
+    font-size:.50em;
+    color:var(--muted);
+    line-height:1.22;
+  }
+
+  /* make KaTeX display math fit better inside narrow cards */
+  .yz-slide-shell .katex-display{
+    margin: .35em 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .yz-slide-shell .katex-display > .katex{
+    font-size: .92em;
+  }
+</style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <section>
+      <div class="shell center" style="padding-top: 18vh;">
+        <h1>Quantum vs. Classical Witness and Advice</h1>
+        <p class="subtitle">Based on "Separating Quantum and Classical Advice with Good Codes" by Bostanci, Huang, and Vaikuntanathan (2026)</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>NP vs. P/poly</h2>
+        <div class="concept-grid">
+          <div class="concept-card fragment" data-fragment-index="1">
+            <h3>NP</h3>
+            <div class="concept-flow">
+              <div class="concept-node input">
+                <div class="concept-main">\(x\)</div>
+                <div class="concept-sub">input</div>
+              </div>
+              <div class="concept-arrow">\(\to\)</div>
+              <div class="concept-node witness">
+                <div class="concept-main">\(w(x)\)</div>
+                <div class="concept-sub">untrusted witness</div>
+              </div>
+              <div class="concept-arrow">\(\to\)</div>
+              <div class="concept-node machine">
+                <div class="concept-main">\(P\)</div>
+                <div class="concept-sub">verifier</div>
+              </div>
+            </div>
+            <div class="concept-footer">
+              <div class="concept-tag">depends on \(x\)</div>
+              <div class="concept-tag">must be checked</div>
+            </div>
+          </div>
+          <div class="concept-card fragment" data-fragment-index="2">
+            <h3>P/poly</h3>
+            <div class="concept-flow">
+              <div class="concept-node input">
+                <div class="concept-main">\(x\)</div>
+                <div class="concept-sub">input</div>
+              </div>
+              <div class="concept-arrow">\(\to\)</div>
+              <div class="concept-node advice">
+                <div class="concept-main">\(a_{\lvert x\rvert}\)</div>
+                <div class="concept-sub">trusted advice</div>
+              </div>
+              <div class="concept-arrow">\(\to\)</div>
+              <div class="concept-node machine">
+                <div class="concept-main">\(P\)</div>
+                <div class="concept-sub">machine</div>
+              </div>
+            </div>
+            <div class="concept-footer">
+              <div class="concept-tag">depends on \(\lvert x\rvert\)</div>
+              <div class="concept-tag">same advice for each length</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Quantum Version(s) of NP</h2>
+        <!-- <p class="subtitle">Change the verifier? the witness? or both?</p> -->
+        <table class="class-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Verifier</th>
+              <th>Witness</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="fragment" data-fragment-index="1">
+              <td class="class-name">NP</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{classical}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(w \in \{0,1\}^{\textup{poly}(n)}\)</div>
+                    <div class="class-sub">classical string</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr class="fragment" data-fragment-index="2">
+              <td class="class-name">QCMA</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{quantum}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(w \in \{0,1\}^{\textup{poly}(n)}\)</div>
+                    <div class="class-sub">classical string</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr class="fragment" data-fragment-index="3">
+              <td class="class-name">QMA</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{quantum}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\lvert \psi \rangle \in \mathbb{C}^{2^{\mathrm{poly}(n)}}\)</div>
+                    <div class="class-sub">quantum state</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Quantum Version(s) of P/poly</h2>
+        <table class="class-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Machine</th>
+              <th>Advice</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="fragment" data-fragment-index="1">
+              <td class="class-name">P/poly</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{classical}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(a_{\lvert x\rvert} \in \{0,1\}^{\textup{poly}(n)}\)</div>
+                    <div class="class-sub">classical advice</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr class="fragment" data-fragment-index="2">
+              <td class="class-name">BQP/poly</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{quantum}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(a_{\lvert x\rvert} \in \{0,1\}^{\textup{poly}(n)}\)</div>
+                    <div class="class-sub">classical advice</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr class="fragment" data-fragment-index="3">
+              <td class="class-name">BQP/qpoly</td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\mathrm{quantum}\)</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="class-cell">
+                  <div class="class-wrap">
+                    <div class="class-math">\(\lvert \psi_{\lvert x\rvert} \rangle \in \mathbb{C}^{2^{\mathrm{poly}(n)}}\)</div>
+                    <div class="class-sub">quantum advice</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+  <div class="shell">
+    <h2>Classical and Quantum Oracles</h2>
+
+    <div class="grid3" style="margin-top:18px; align-items:start;">
+      <div class="panel fragment">
+        <h3 class="good">Classical function</h3>
+        <p style="text-align:center;">
+          \(f:\{0,1\}^n\to\{0,1\}^m\)
+        </p>
+        <p style="margin:0; text-align:center;">
+          Input \(x\), output \(f(x)\)
+        </p>
+      </div>
+
+      <div class="panel fragment">
+        <h3 style="color:var(--blue);">Classical oracle (unitary)</h3>
+        <p style="text-align:center; margin-bottom:8px;">
+          \(U_f\lvert x,b\rangle=\lvert x,b\oplus f(x)\rangle\)
+        </p>
+        <p style="margin:0; text-align:center;">
+          Queries in superposition to \(f\)
+        </p>
+      </div>
+
+      <div class="panel fragment">
+        <h3 class="bad">Quantum oracle</h3>
+        <p style="text-align:center; margin-bottom:8px;">
+          \(U\lvert\psi\rangle\)
+        </p>
+        <p style="margin:0; text-align:center;">
+          General unitary
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section>
+      <div class="slide-shell">
+        <h2>History</h2>
+        <!-- <p class="subtitle">Above each point: what changed. Below each point: year and paper.</p> -->
+        <div class="hist-flat">
+          <div class="hist-flat-grid">
+            <div class="hist-stop wit fragment">
+              <div class="hist-phrase">Introduction</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">1999-2003</div>
+                <div class="hist-paper"><strong>Kitaev</strong>(QMA); <strong> Aharonov-Naveh</strong>(QCMA);<strong>Nishimura-Yamakami</strong>(BQP/qpoly, BQP/poly)</div>
+              </div>
+            </div>
+            <div class="hist-stop fragment">
+              <div class="hist-phrase">Quantum Oracle</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2007</div>
+                <div class="hist-paper"><strong>Aaronson-Kuperberg</strong></div>
+              </div>
+            </div>
+            <div class="hist-stop wit fragment">
+              <div class="hist-phrase">(Restricted) Permutation Oracle</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2018</div>
+                <div class="hist-paper"><strong>Fefferman-Kimmel</strong></div>
+              </div>
+            </div>
+            <div class="hist-stop fragment">
+              <div class="hist-phrase">FBQP/poly vs FBQP/qpoly (unconditional)</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2023</div>
+                <div class="hist-paper"><strong>Aaronson-Buhrman-Kretschmer</strong></div>
+              </div>
+            </div>
+            <div class="hist-stop wit fragment">
+              <div class="hist-phrase">Modified Classical Oracle</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2023-2024</div>
+                <div class="hist-paper"><strong>Natarajan-Nirkhe; Li-Liu-Pelecanos-Yamakawa; Ben-David-Kundu</strong></div>
+              </div>
+            </div>
+            <div class="hist-stop fragment">
+              <div class="hist-phrase">Classical QCMA vs QMA</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2025</div>
+                <div class="hist-paper"><strong>Bostanci-Haferkamp-Nirkhe-Zhandry</strong></div>
+              </div>
+            </div>
+            <div class="hist-stop wit fragment">
+              <div class="hist-phrase">Classical QCMA vs QMA and BQP/poly vs BQP/qpoly</div>
+              <div class="hist-dot"></div>
+              <div class="hist-below">
+                <div class="hist-year">2026</div>
+                <div class="hist-paper"><strong>Bostanci-Huang-Vaikuntanathan</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Results of [BHV26]</h2>
+        <div class="grid2" style="margin-top:18px;">
+          <div class="panel fragment">
+            <p>There exists a classical oracle \( \mathcal{O} \) such that</p>
+            <p style="text-align:center;">\[ \mathsf{BQP/qpoly}^{\mathcal{O}} \not\subseteq \mathsf{BQP/poly}^{\mathcal{O}} \]</p>
+          </div>
+          <div class="panel fragment">
+            <p>There exists a classical oracle \( \mathcal{O} \) such that</p>
+            <p style="text-align:center;">\[ \mathsf{QMA}^{\mathcal{O}} \not\subseteq \mathsf{QCMA}^{\mathcal{O}} \]</p>
+          </div>
+        </div>
+        <ul style="margin-top:22px;">
+          <li class="fragment">No modifications to the oracle</li>
+          <li class="fragment">Relativization barrier</li>
+          <li class="fragment">Natural limit</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Separation characteristics</h2>
+        <ul style="list-style:none; padding:0; margin-top:16px; display:flex; flex-direction:column; gap:14px;">
+          <li class="fragment">
+            <strong>Capture superpolynomial-amount of information.</strong>
+            <div class="callout" style="margin-top:6px; font-size:.82em;">
+              A classical string \( w \in \{0,1\}^{\mathrm{poly}(n)} \) encodes polynomially-many bits, a quantum state \( \lvert \psi \rangle \in \mathbb{C}^{2^{\mathrm{poly}(n)}} \) can be in a superposition over all of them.
+            </div>
+          </li>
+          <li class="fragment">
+            <strong>Modify the state.</strong>
+            <div class="callout" style="margin-top:6px; font-size:.82em;">
+              Apply a unitary \( U\) which requires a superposition (i.e. switching measurement with \( U\) should not suffice):<br>
+              \( \lvert \psi \rangle \xrightarrow{U} U \lvert \psi \rangle \xrightarrow{\;\text{measure}\;} o_1 \color{red}\neq\color{white} \lvert \psi \rangle \xrightarrow{\;\text{measure}\;} o^\prime_1 \xrightarrow{U} o_1\)
+            </div>
+          </li>
+          <li class="fragment">
+            <strong>Argue via power of copies.</strong>
+            <div class="callout" style="margin-top:6px; font-size:.82em;">
+              \(w\) can be copied freely, \(\lvert \psi \rangle \) cannot. A QCMA verifier can reuse same witness even after measurement, QMA cannot.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Building block</h2>
+        <p>There exists a relational problem \( R = \{(x, v): x\in \{0,1\}^n, v\in \{0,1\}^{\textup{poly}(n)}\} \) with the following properties:</p>
+        <ul style="margin-top:14px; display:flex; flex-direction:column; gap:16px;">
+          <li class="fragment">
+            There <span style="color:red;">exists</span> a polynomial-sized state \(\color{red} \lvert \psi \rangle \)  and a machine \(M\) such that for any input \( x \),  \(M\) outputs a \( v \) such that \( (x, v) \in R \):
+            <div class="callout" style="margin-top:6px; font-size:.82em;">
+              \( \exists\, \lvert \psi \rangle \;\;\forall x \;:\; M(x, \lvert \psi \rangle) \;\xrightarrow{\text{w.h.p.}}\; v \;\text{ s.t. }\; (x, v) \in R \)
+            </div>
+          </li>
+          <li class="fragment">
+            There does <span style="color:red;">not exist</span> a polynomial-sized classical string \(\color{red}w\) and machine \(M\) which on input \( x \) produces a valid \( v \):
+            <div class="callout" style="margin-top:6px; font-size:.82em;">
+              \( \nexists\, w \in \{0,1\}^{\mathrm{poly}(n)} \;\;\forall x \;:\; M(x, w) \;\xrightarrow{\text{w.h.p.}}\; v \;\text{ s.t. }\; (x, v) \in R \)
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Yamakawa-Zhandry / Code-Intersection Problem</h2>
+        <div class="grid2" style="margin-top:14px; align-items:stretch;">
+          <div class="panel fragment" style="border-color:rgba(255,211,122,.4);">
+            <h3 style="color:var(--gold);">Random functions \( F \)</h3>
+            <p style="margin:8px 0 0;">\( n \) independent random functions
+              \[ f_1,\dots,f_n \;:\; \Sigma \to \{0,1\} \]
+            </p>
+          </div>
+          <div class="panel fragment" style="border-color:rgba(121,192,255,.4);">
+            <h3 style="color:var(--blue);">Code \( C \)</h3>
+            <p style="margin:8px 0 0;">An error-correcting code
+              \[ C \;\subseteq\; \Sigma^n \]
+            </p>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; gap:120px; font-size:1.2em; color:var(--muted); margin:4px 0; line-height:1;" class="fragment">
+          <span>↓</span><span>↓</span>
+        </div>
+        <div class="panel fragment" style="border-color:rgba(150,245,184,.4);">
+          <h3 style="color:var(--green); margin-bottom:8px;">Relation \( R_F \)</h3>
+          <p style="margin:0;">Given \( x \in \{0,1\}^n \), find \( c \in C \) such that \( f_i(c_i) = x_i \) for all \( i \),</p>
+          <p style="margin:0;">\[ R_F = \bigl\{(x,\, c) \;:\; c \in C,\; \forall i\; f_i(c_i) = x_i \bigr\} \]</p>
+        </div>
+        <div class="callout fragment" style="margin-top:14px; border-color:var(--gold);">
+          <p style="margin:0;"><span class="gold"><strong>[YZ24, BHV26]</strong></span> &nbsp;There exists a code \( C \) such that \( R_F \) satisfies the building-block properties.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section>
+      <!-- Slide 1 -->
+      <section>
+        <div class="shell">
+          <h2>Quantum Algorithm<span class="muted" style="font-size:.6em;">— Setup</span></h2>
+          <!-- <p class="subtitle">Left: what we can actually prepare. Right: the state we want.</p> -->
+          <div class="grid2" style="margin-top:14px; align-items:start;">
+            <div class="panel fragment" style="border-color:rgba(255,211,122,.4);">
+              <div class="yz-tag" style="display:block; text-align:center; font-size:.6em; margin-bottom:8px;">Given state</div>
+              <p class="yz-eq" data-fragment-index="1">\[ |\phi_x\rangle \otimes |\psi_C\rangle \;\propto\; \sum_{y:\,F(y)=x} |y\rangle \;\otimes\; \frac{1}{\sqrt{|C|}} \sum_{c\in C} |c\rangle \]</p>
+              <!-- <p class="yz-note">Tensor product of the hash-preimage superposition and the uniform codeword superposition.</p> -->
+            </div>
+            <div class="panel fragment" style="border-color:rgba(121,192,255,.4);">
+              <div class="yz-tag" style="display:block; text-align:center; font-size:.6em; margin-bottom:8px;">Goal state</div>
+              <p class="yz-eq" style="margin:0;">\[ |\mathrm{Goal}_x\rangle \;\propto\; \sum_{y:\,F(y)=x,\; y\in C} |y\rangle \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ = \sum_{y \in \Sigma^n} [\mathbf{1}_{F(y)=x}\cdot \mathbf{1}_{y\in C}] |y\rangle \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ = \left(\sum_{y\in \Sigma^n}[\mathbf{1}_{F(y)=x}]\lvert y\rangle \right) \odot \left(\sum_{y\in \Sigma^n} [\mathbf{1}_{y\in C}]\lvert y\rangle\right) \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ = \lvert\phi_x\rangle \odot \lvert\psi_C\rangle \]</p>
+              <!-- <p class="yz-note">We want a superposition over exactly the valid solutions.</p> -->
+              <!-- <p class="yz-eq">\[ \mathbf{1}_{F(v)=x}\cdot \mathbf{1}_{v\in C} \]</p> -->
+              <!-- <p class="yz-note">The support is the pointwise product of the two conditions.</p> -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 2 -->
+      <section>
+        <div class="shell">
+          <h2>Quantum Algorithm <span class="muted" style="font-size:.6em;">— Applying QFT</span></h2>
+          <div class="grid2" style="margin-top:14px; align-items:start;">
+            <div class="panel fragment" style="border-color:rgba(255,211,122,.4);">
+              <div class="yz-tag" style="display:block; text-align:center; font-size:.6em; margin-bottom:8px;">Given state</div>
+              <p class="yz-eq" style="margin:0;">\[ QFT|\phi_x\rangle \otimes QFT|\psi_C\rangle \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ \propto \sum_{y} \alpha_y \lvert y\rangle \otimes \frac{1}{\sqrt{|C^\perp|}} \sum_{z\in C^\perp} |z\rangle \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ = \sum_{y\in \Sigma^n,\,z\in C^{\perp}} \alpha_y \lvert y + z\rangle \lvert z\rangle \]</p>
+              <p>
+                Assuming C is a \( \mathbb{F}_{q}\)-linear code, <br>\(C^{\perp} = \{c^{\prime}: \forall c\in C, c^{\prime}\cdot c = 0 \} \)
+              </p>
+              <!-- <p class="yz-eq">\[ QFT(|\psi_C\rangle) \;=\; \frac{1}{\sqrt{|C^\perp|}} \sum_{z\in C^\perp} |z\rangle \]</p>
+              <p class="yz-note">Since \(C\) is \(\mathbb{F}_q\)-linear, its Fourier transform is the uniform state on the dual code \(C^\perp\).</p>
+              <p class="yz-eq">\[ QFT(|\phi_x\rangle)\otimes QFT(|\psi_C\rangle) \;\longrightarrow\; \sum_{a,z} \alpha_a\, |a+z\rangle |z\rangle \]</p>
+              <p class="yz-note">Apply QFT to both registers, then add register \(B\) into register \(A\).</p> -->
+            </div>
+            <div class="panel fragment" style="border-color:rgba(121,192,255,.4);">
+              <div class="yz-tag" style="display:block; text-align:center; font-size:.6em; margin-bottom:8px;">Goal state</div>
+              <p class="yz-eq" style="margin:0;">\[ QFT\lvert\mathrm{Goal}_x\rangle = \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ \phantom{QFT\lvert\mathrm{Goal}_x\rangle} = QFT\lvert\phi_x\rangle \star QFT\lvert\psi_C\rangle \]</p>
+              <p class="yz-eq fragment" style="margin:0;">\[ \phantom{QFT\lvert\mathrm{Goal}_x\rangle} \propto \sum_{y\in \Sigma^n,\,z\in C^{\perp}} \alpha_y \lvert y + z\rangle \]</p>
+              <p class="yz-note">
+                Using the Convolution Theorem,<br>\[QFT\!\left( \ket{\psi_1} \odot \ket{\psi_2} \right) = QFT(\ket{\psi_1}) \star QFT(\ket{\psi_2}) \]
+              </p>
+              <!-- <p class="yz-eq">\[ QFT\!\bigl(\mathbf{1}_{F(\cdot)=x}\cdot \mathbf{1}_{C}\bigr) = QFT(\mathbf{1}_{F(\cdot)=x}) \star QFT(\mathbf{1}_{C}) \]</p>
+              <p class="yz-note">Under the Fourier transform, pointwise product becomes convolution.</p>
+              <p class="yz-eq">\[ QFT^{-1}\bigl(\text{convolution in Fourier space}\bigr) \;\longrightarrow\; |\mathrm{Goal}_x\rangle \]</p>
+              <p class="yz-note">Applying \(QFT^{-1}\) returns the desired solution state.</p> -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3 -->
+      <section>
+        <div class="shell">
+          <h2>Quantum Algorithm <span class="muted" style="font-size:.6em;">— Decoding</span></h2>
+          <!-- <p class="subtitle">How do we connect the two sides?</p> -->
+          <div class="grid2" style="margin-top:20px; align-items:start;">
+            <div class="panel" style="border-color:rgba(255,211,122,.4);">
+              <p>Let \(r = y+z\) and consider the following algorithm:</p>
+              <p class="fragment" data-fragment-index="1" style="margin:0.2em 0;">\(\displaystyle \lvert y+z\rangle\lvert z\rangle\lvert 0\rangle = \lvert r\rangle\lvert z\rangle\lvert 0\rangle \)</p>
+              <p class="fragment" data-fragment-index="4" style="margin:0.2em 0;">\(\displaystyle \xrightarrow{\textup{Dec}_{C^\perp}} \lvert r\rangle\lvert z\rangle\lvert\textup{Dec}_{C^\perp}(r)\rangle \)</p>
+              <p class="fragment" data-fragment-index="5" style="margin:0.2em 0;">\(\displaystyle \xrightarrow{\;w.h.p.\;} \lvert r\rangle\lvert z\rangle\lvert z\rangle \)</p>
+              <p class="fragment" data-fragment-index="6" style="margin:0.2em 0;">\(\displaystyle \xrightarrow{\;sub\;} \lvert r\rangle\lvert 0\rangle\lvert z\rangle \)</p>
+              <p class="fragment" data-fragment-index="7" style="margin:0.2em 0;">\(\displaystyle \xrightarrow{\textup{Dec}_{C^\perp}^{-1}} \lvert y+z\rangle\lvert 0\rangle\lvert 0\rangle \)</p>
+            </div>
+            <div class="panel" style="border-color:rgba(121,192,255,.4);">
+              <p class="fragment" data-fragment-index="2">\(\textup{Dec}_{C^\perp}(r)\): Decoding algorithm for \(C^\perp\) which succeeds for all \(z\in C^\perp, y\in\Sigma^n\) such that \[\textup{hw}(z-y)\leq \left(\tfrac{1}{2} + \epsilon\right)N\]</p>
+              <p class="fragment" data-fragment-index="3">Notice that, \[\Pr_{i\in [n]}[y_i = 0] \approx \frac{1}{2}.\] Therefore, \(\textup{Dec}_{C^\perp}\) succeeds w.h.p.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sub-slide 4: Full algorithm -->
+      <section>
+        <div class="shell">
+          <h2>Quantum Algorithm <span class="muted" style="font-size:.6em;">— Putting it together</span></h2>
+          <div class="panel" style="margin-top:20px;">
+            <p style="margin:0.2em 0;">\(\displaystyle \text{1. Prepare } |\phi_x\rangle_A \otimes |\psi_C\rangle_B \;\propto\; \sum_{y:\,F(y)=x} |y\rangle \;\otimes\; \frac{1}{\sqrt{|C|}} \sum_{c\in C} |c\rangle \)</p>
+            <p class="fragment" style="margin:0.2em 0;">\(\displaystyle \text{2. Apply } QFT \text{ to both registers} \)</p>
+            <p class="fragment" style="margin:0.2em 0;">\(\displaystyle \text{3. Add register } B \text{ into register } A: \quad \sum_{a,z} \alpha_a\, |a+z\rangle_A |z\rangle_B \)</p>
+            <p class="fragment" style="margin:0.2em 0;">\(\displaystyle \text{4. Uncompute register } B \text{ via } \mathrm{Dec}_{C^\perp}: \quad |a+z\rangle_A |z\rangle_B \mapsto |a+z\rangle_A |0\rangle_B \)</p>
+            <p class="fragment" style="margin:0.2em 0;">\(\displaystyle \text{5. Apply } QFT^{-1} \text{ to register } A \text{ and measure} \;\xrightarrow{\text{w.h.p.}}\; v \text{ s.t. } (x, v) \in R_F \)</p>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Classical Hardness</h2>
+        <div class="panel" style="margin-top:16px; border-color:rgba(255,211,122,.4);">
+          <h3 style="color:var(--gold);">Definition: List-Recoverability</h3>
+          <p style="margin-top:8px;">A code \( C \subseteq \Sigma^n \) is \( (\ell, L) \)-<strong>list-recoverable</strong> if for any input lists \( S_1, \dots, S_n \subseteq \Sigma \) with \( |S_i| \leq \ell \) for all \( i \), the number of codewords \( c \in C \) with \( c_i \in S_i \) for all \( i \) is at most \( L \):</p>
+          <p style="text-align:center; margin-top:8px;">\[ \forall S_1,\dots,S_n \subseteq \Sigma,\; |S_i| \leq \ell \;:\quad \bigl|\bigl\{ c \in C \;:\; c_i \in S_i \;\forall i \bigr\}\bigr| \;\leq\; L \]</p>
+        </div>
+        <ul style="margin-top:16px;">
+          <li class="fragment">After \(n\cdot l\) queries to \(f_1,\dots f_n\), we may only construct \(L\) codewords \(c\in C\). As long as \(L\ll 2^n\), we cannot output a \((x,c)\in R_F\) for all \(x\in \{0,1\}^n\).</li>
+          <li class="fragment"><strong>[BHV26]</strong> There exists a \(\mathbb{F}_q\)-linear code \(C\) with good \(\mathrm{Dec}_{C^\perp}\) which is \((l, 2l)\)-list recoverable for all \(l \leq 2^{n^{1/5}}\).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Witness Separation Problem</h2>
+        <p class="subtitle">Input: \( 1^{\textup{poly}(n)} \) - Global property of \(\mathcal{O}_n \)</p>
+        <div class="panel fragment" style="margin-top:12px;">
+          <p style="margin:0 0 8px;">Let \( S_1, S_2 \) be a random partition of \( \{0,1\}^n \), and let \( \mathcal{O}_n \) be the oracle:</p>
+          <p style="text-align:center; margin:0;">
+            \( \mathcal{O}_n(x, v) = \begin{cases} 1 & \text{if } (x,v)\in R \text{ and } x \in S_1 \\ \perp & \text{if } (x,v)\in R \text{ and } x \in S_2 \\ \bot & \text{otherwise} \end{cases} \)
+          </p>
+        </div>
+        <div class="grid2 fragment" style="margin-top:14px;">
+          <div class="panel" style="border-color:rgba(150,245,184,.4);">
+            <h3 class="good">YES instance</h3>
+            <p style="margin:6px 0 0;">\( S_1 = \{0,1\}^n \)</p>
+          </div>
+          <div class="panel" style="border-color:rgba(255,141,141,.4);">
+            <h3 class="bad">NO instance</h3>
+            <p style="margin:6px 0 0;">\( \Pr_{x}[x \in S_1] \leq \tfrac{2}{3} \)</p>
+          </div>
+        </div>
+        <div class="panel fragment" style="margin-top:14px; border-color:rgba(121,192,255,.4);">
+          <h3 style="color:var(--blue); margin-bottom:8px;">QMA algorithm</h3>
+          <p style="margin:0;">Given \( \lvert \psi \rangle \), sample \( x \leftarrow \{0,1\}^n \), run \(v^\prime = M(x, \lvert\psi\rangle)\), accept \( \iff \mathcal{O}_n\!\left(x,\, v^{\prime}\right) = 1 \)</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>QCMA Lower Bound</h2>
+
+        <div class="grid2 fragment" data-fragment-index="1" style="margin-top:12px; align-items:start;">
+          <div class="panel" style="border-color:rgba(121,192,255,.4); padding:12px 16px;">
+            <ul style="margin:0;">
+              <li class="fragment" data-fragment-index="2">Successful QCMA algorithm \(A\) with witness \(w \implies\) query \( (x,v)\in R_F\text{ s.t. } x\in S_2\).</li>
+              <li class="fragment" data-fragment-index="3">\(A\) must be good at guessing \(v\in C\) and \((x,v)\in R_F\).</li>
+              <li class="fragment" data-fragment-index="9">For the <strong>guesser</strong> algorithm, \[\Pr[l \text{ codewords}]\geq  \underbrace{2^{-|w|}}_{\color{orange}\text{Correct witness}} \cdot \left(\underbrace{\frac{1}{\mathrm{poly}(n)}}_{\color{orange}\text{Good query}}\right)^l.\]</li>
+            </ul>
+          </div>
+          <div class="panel" style="border-color:rgba(150,245,184,.4); padding:12px 16px;">
+            <h3 class="fragment" data-fragment-index="4" style="color:var(--green); margin-bottom:6px;">Guesser Algorithm</h3>
+            <p class="fragment" data-fragment-index="5">Let \(S_1=\emptyset\). Guess a random witness \(w\). Repeat the following \(l\) times:</p>
+            <ol>
+              <li class="fragment" data-fragment-index="6">Run \(A(w)\) with oracle \(O[F,S_1]\).</li>
+              <li class="fragment" data-fragment-index="7">Choose a random query \(q\in[Q]\), measure the input \((x,v)\).</li>
+              <li class="fragment" data-fragment-index="8">Add \((x,v)\) to \(O[F,S_1]\).</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- <div class="panel fragment" style="margin-top:12px; border-color:rgba(255,141,141,.4); padding:12px 16px;">
+          <h3 style="color:var(--red); margin-bottom:4px;">Impossibility</h3>
+          <p style="margin:0;">Let \(s(l)\) = min symbols to specify \(l\) distinct codewords. Since \(H\) is random, probability \(\leq 2^{-s(l)}\). But \(s(l)\) is exactly list-recoverability — so for \(l \leq 2^{n^{1/5}}\) this is negligible.</p>
+        </div> -->
+
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>QCMA Lower Bound</h2>
+        <div class="panel fragment" style="margin-top:12px; border-color:rgba(255,141,141,.4); padding:12px 16px;">
+          <h3 style="color:var(--red); margin-bottom:4px;">Contradiction</h3>
+          <p class="fragment">\[s(l) = \text{minimum \# of \textbf{distinct} character outputs in } l \text{ codewords} \]</p>
+          <p class="fragment">As \(F\) is random, the probability of guessing all symbols correctly is at most \( 2^{-s(l)}\).</p>
+          <p class="fragment">For \((l,O(l))\)-list recoverable code \(C\), \(s(l)=O(n\cdot l)\). Therefore,</p>
+          <p class="fragment">\[ \Pr[\text{Success}] \geq 2^{-|w|} \cdot \left(\frac{1}{\mathrm{poly}(n)}\right)^l  = \mathrm{poly}(n)^{-l} \color{red}\ll\color{white} 2^{-s(l)} \geq \Pr[\text{Success}] \]</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Advice Separation Problem</h2>
+        <p class="subtitle">Input: \( x \in \{0,1\}^n \) - Local property of \(\mathcal{O}_n\)</p>
+        <div class="panel fragment" style="margin-top:12px;">
+          <p style="margin:0 0 8px;">Let \( S_1, S_2 \) be a random partition of \( \{0,1\}^n \), and let \( \mathcal{O}_n \) be the oracle:</p>
+          <p style="text-align:center; margin:0;">
+            \( \mathcal{O}_n(x, v) = \begin{cases} 1 & \text{if } (x,v)\in R \text{ and } x \in S_1 \\ 2 & \text{if } (x,v)\in R \text{ and } x \in S_2 \\ \bot & \text{otherwise} \end{cases} \)
+          </p>
+        </div>
+        <div class="grid2 fragment" style="margin-top:14px;">
+          <div class="panel" style="border-color:rgba(150,245,184,.4);">
+            <h3 class="good">YES instance</h3>
+            <p style="margin:6px 0 0;">\( x \in S_1 \)</p>
+          </div>
+          <div class="panel" style="border-color:rgba(255,141,141,.4);">
+            <h3 class="bad">NO instance</h3>
+            <p style="margin:6px 0 0;">\( x \in S_2 \)</p>
+          </div>
+        </div>
+        <div class="panel fragment" style="margin-top:14px; border-color:rgba(121,192,255,.4);">
+          <h3 style="color:var(--blue); margin-bottom:8px;">BQP/qpoly algorithm</h3>
+          <p style="margin:0;">
+            Given \( \lvert \psi \rangle \), run \(v^\prime = M(x, \lvert\psi\rangle)\), accept \( \iff \mathcal{O}_n\!\left(x,\, v^{\prime}\right) = 1 \)
+            </p>
+        </div>
+      </div>
+    </section>
+
+
+<section>
+  <div class="shell">
+    <h2>BQP/poly Lower Bound</h2>
+
+    <p><strong>Argument: </strong>Any BQP/poly algorithm \(A\) for an input \(x\) on average must query \((x,v)\in R_F\): </p>
+    <ul style="margin-top:16px;">
+      
+      <li class="fragment">
+        (Quantum version of) <strong>Yao's box lemma:</strong> Given a random function \(G: \{0,1\}^n\rightarrow \{0,1\}\) and \(\mathrm{poly}(n)\) advice, no algorithm can guess \(G(x)\) without querying \(G(x)\).
+      </li>
+
+      <li class="fragment">
+        Apply similar Guesser argument to the QCMA lower bound (i.e. measuring the query register and building our own oracle).
+      </li>
+    </ul>
+    <p class="fragment">Contradicting the hardness of the Code-Intersection Problem.</p>
+  </div>
+</section>
+
+
+<section>
+  <div class="shell">
+    <h2>Open Question: Search-to-decision for QMA</h2>
+    <p class="subtitle">
+      For NP, we know how to perform search-to-decision reductions:
+    </p>
+
+    <div style="margin-top:18px; display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; align-items:start;">
+      <div class="panel fragment" style="background:rgba(255,255,255,.03); min-height:110px;">
+        <p style="margin:0; text-align:center;">
+          Start with satisfiable<br>
+          \( \varphi(x_1,\dots,x_n) \)
+        </p>
+      </div>
+
+      <div class="panel fragment" style="background:rgba(255,255,255,.03); min-height:110px;">
+        <p style="margin:0; text-align:center;">
+          Query:<br>
+          is \( \varphi\!\mid_{x_i=0} \) satisfiable?
+        </p>
+      </div>
+
+      <div class="panel fragment" style="background:rgba(255,255,255,.03); min-height:110px;">
+        <p style="margin:0; text-align:center;">
+          YES \( \Rightarrow x_i=0 \)<br>
+          NO \( \Rightarrow x_i=1 \)
+        </p>
+      </div>
+
+      <div class="panel fragment" style="background:rgba(255,255,255,.03); min-height:110px;">
+        <p style="margin:0; text-align:center;">
+          Repeat for all bits
+        </p>
+      </div>
+    </div>
+
+    <div class="panel fragment" style="margin:18px auto 0; max-width:840px; border-color:rgba(255,141,141,.40);">
+      <p style="margin:0; text-align:center;">
+        <strong>[INN+21]</strong> There exists a search-to-decision for QCMA.<br>For QMA we have a quantum oracle impossibility argument.<br> Can it be improved to a <strong>classical</strong> oracle argument?
+      </p>
+    </div>
+  </div>
+</section>
+
+    <section>
+      <div class="shell refs">
+        <h2>References</h2>
+        <div class="panel">
+          <p><strong>[Kit99]</strong> Kitaev. <em>Quantum NP</em></p>
+          <p><strong>[AN02]</strong> Aharonov, Naveh. <em>Quantum NP - A Survey</em>, arXiv:quant-ph/0210077, 2002.</p>
+          <p><strong>[NY03]</strong> Nishimura, Yamakami. <em>Polynomial time quantum computation with advice</em>, IPL 2004.</p>
+          <p><strong>[AK07]</strong> Aaronson, Kuperberg. <em>Quantum Versus Classical Proofs and Advice</em>, CCC 2007.</p>
+          <p><strong>[FK18]</strong> Fefferman, Kimmel. <em>Quantum vs. Classical Proofs and Subset Cover</em>, MFCS 2018.</p>
+          <p><strong>[INN+21]</strong> Irani, Natarajan, Nirkhe, Rao, Yuen. <em>Quantum search-to-decision reductions and the state synthesis problem</em>, CCC 2022.</p>
+          <p><strong>[YZ22]</strong> Yamakawa, Zhandry. <em>Verifiable Quantum Advantage without Structure</em>, FOCS 2022.</p>
+          <p><strong>[ABK23]</strong> Aaronson, Buhrman, Kretschmer. <em>A Qubit, a Coin, and an Advice String Walk Into a Relational Problem</em>, ITCS 2023.</p>
+          <p><strong>[NN23]</strong> Natarajan, Nirkhe. <em>A distribution testing oracle separation between QMA and QCMA</em>, CCC 2023.</p>
+          <p><strong>[LLPY24]</strong> Li, Liu, Pelecanos, Yamakawa. <em>Classical Verification of Quantum Computations with Efficient Verifier</em>, ITCS 2024.</p>
+          <p><strong>[BDK24]</strong> Ben-David, Kundu. <em>Oracle separation of QMA and QCMA with bounded adaptivity</em>, STOC 2024.</p>
+          <p><strong>[BHNZ26]</strong> Bostanci, Haferkamp, Nirkhe, Zhandry. <em>Classical oracle separation of QMA and QCMA</em>, STOC 2026.</p>
+          <p><strong>[BHV26]</strong> Bostanci, Huang, Vaikuntanathan. <em>Separating Quantum and Classical Advice with Good Codes</em>, arXiv:2602.09385, 2026.</p>
+        </div>
+      </div>
+    </section>
+    
+<!-- 
+    <section>
+      <div class="shell">
+        <h2>Witness separation problem: the decision wrapper</h2>
+        <p class="subtitle">Now separate QMA from QCMA by wrapping the search problem inside a subset-size decision problem.</p>
+        <div class="panel">
+          <div class="step"><div class="num">1</div><div><p>The oracle is <span class="mono">O[H,E]</span>. It accepts only if a pair <span class="mono">(x,v)</span> is a valid relation witness <strong>and</strong> is in the set <span class="mono">E</span>.</p></div></div>
+          <div class="step fragment"><div class="num">2</div><div><p><strong>YES case:</strong> <span class="mono">E = {0,1}^λ × Σ^q</span>. So every valid solution pair is accepted.</p></div></div>
+          <div class="step fragment"><div class="num">3</div><div><p><strong>NO case:</strong> <span class="mono">E ⊆ F × Σ^q</span> where <span class="mono">|F| ≤ 2^λ / 3</span>. So at least one third of the possible targets <span class="mono">x</span> are completely uncovered.</p></div></div>
+        </div>
+        <div class="panel soft fragment" style="margin-top:14px;">
+          <p class="big">Decision task: distinguish “all targets covered” from “only at most two thirds covered.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Why this is in QMA</h2>
+        <div class="grid2">
+          <div class="panel">
+            <h3>Witness</h3>
+            <p>Merlin sends the YZ advice state <span class="mono">|adv_H⟩</span> as the quantum witness.</p>
+            <div class="step fragment"><div class="num">1</div><div><p>The verifier samples a random target <span class="mono">x</span>.</p></div></div>
+            <div class="step fragment"><div class="num">2</div><div><p>Using the witness, the verifier runs the biased YZ decoding algorithm to produce a candidate <span class="mono">v</span>.</p></div></div>
+            <div class="step fragment"><div class="num">3</div><div><p>It makes one query to <span class="mono">O[H,E]</span> on <span class="mono">(x,v)</span> and accepts iff the oracle says yes.</p></div></div>
+          </div>
+          <div class="panel">
+            <h3>Completeness / soundness intuition</h3>
+            <div class="mini-card fragment"><p><span class="good"><strong>YES:</strong></span> every target is covered, and the YZ decoder succeeds on all <span class="mono">x</span> with probability at least <span class="mono">2/3</span>, so acceptance is high.</p></div>
+            <div class="mini-card fragment" style="margin-top:12px;"><p><span class="bad"><strong>NO:</strong></span> at least one third of targets lie outside <span class="mono">F</span>. If the verifier samples such an <span class="mono">x</span>, <span class="mono">O[H,E]</span> rejects regardless of what witness Merlin sent.</p></div>
+            <div class="mini-card fragment" style="margin-top:12px;"><p>So the verifier gets a clean constant soundness gap from the random choice of <span class="mono">x</span>.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell tight">
+        <h2>Why QCMA fails: the guesser argument</h2>
+        <p class="subtitle">This is the proof mechanism that turns a successful classical witness verifier into an impossible sampler.</p>
+        <div class="panel">
+          <div class="step"><div class="num">1</div><div><p>Assume a QCMA verifier exists using a polynomial-length classical witness <span class="mono">w</span> and making <span class="mono">Q(λ)</span> oracle queries.</p></div></div>
+          <div class="step fragment"><div class="num">2</div><div><p>From this verifier, construct <strong>Guesser</strong>, an algorithm making <strong>no oracle queries</strong>, which repeatedly samples a witness and simulates the verifier against carefully punctured versions of the oracle.</p></div></div>
+          <div class="step fragment"><div class="num">3</div><div><p>Whenever the verifier succeeds, Guesser can extract a new valid pair <span class="mono">(x,v)</span> in the relation.</p></div></div>
+          <div class="step fragment"><div class="num">4</div><div><p>Iterating this, Guesser outputs many distinct valid pairs with noticeable probability.</p></div></div>
+        </div>
+        <div class="panel soft fragment" style="margin-top:14px;">
+          <p class="big">But a query-free algorithm should know essentially nothing about the random hash oracle <span class="mono">H</span>. So producing many valid relation pairs is impossible. Contradiction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell tight">
+        <h2>Where the code properties enter</h2>
+        <div class="grid2">
+          <div class="panel">
+            <h3>What classical algorithms would like to do</h3>
+            <p>Learn a few locally consistent symbols, then patch them together into a full codeword satisfying the hash constraints.</p>
+            <div class="callout fragment"><p>Good list-recovery / expansion prevents this: small symbol sets cannot overlap with too many codewords.</p></div>
+          </div>
+          <div class="panel">
+            <h3>What the proof needs</h3>
+            <ul>
+              <li class="fragment">many solutions exist for the quantum algorithm,</li>
+              <li class="fragment">but small collections of queried points do not explain many of them,</li>
+              <li class="fragment">so a classical witness cannot compress enough useful global information.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="panel soft fragment" style="margin-top:14px;">
+          <p>That is why the paper swaps in <strong>multiplicity codes</strong>: they provide the strong expansion / list-recovery behavior needed for the contradiction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Advice separation is a different slide, because it is a different theorem</h2>
+        <div class="grid2">
+          <div class="panel">
+            <h3><span class="blue">BQP/qpoly</span> upper bound</h3>
+            <p>The quantum advice is again the YZ advice state <span class="mono">|adv_H⟩</span>.</p>
+            <div class="step fragment"><div class="num">1</div><div><p>Input: a target <span class="mono">x</span>.</p></div></div>
+            <div class="step fragment"><div class="num">2</div><div><p>Use <span class="mono">|adv_H⟩</span> to solve the code intersection relation for that <span class="mono">x</span>.</p></div></div>
+            <div class="step fragment"><div class="num">3</div><div><p>Output the corresponding solution <span class="mono">v</span> (or a derived bit/function of it in the final language formulation).</p></div></div>
+          </div>
+          <div class="panel">
+            <h3><span class="gold">BQP/poly</span> lower bound</h3>
+            <div class="step fragment"><div class="num">1</div><div><p>Assume a polynomial-query quantum algorithm with polynomial-length <strong>classical advice</strong> succeeds on random <span class="mono">x</span>.</p></div></div>
+            <div class="step fragment"><div class="num">2</div><div><p>Turn it into a sampler that outputs valid relation pairs <span class="mono">(x,v)</span> too often.</p></div></div>
+            <div class="step fragment"><div class="num">3</div><div><p>Show its queries must concentrate on a very small set; puncturing to that small set then yields too many outputs from too little oracle support.</p></div></div>
+            <div class="step fragment"><div class="num">4</div><div><p>This contradicts the same query-free guessing upper bound style used in the witness lower bound.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>Proof architecture at a glance</h2>
+        <div class="grid3">
+          <div class="panel center">
+            <h3>Quantum side</h3>
+            <p class="big">Fourier decoding<br>+ dual code structure<br>+ YZ advice state</p>
+          </div>
+          <div class="panel center">
+            <h3>Combinatorial side</h3>
+            <p class="big">multiplicity codes<br>+ strong list recovery<br>+ sparse overlap with codewords</p>
+          </div>
+          <div class="panel center">
+            <h3>Lower-bound side</h3>
+            <p class="big">successful classical helper<br>⇒ guesser / sampler<br>⇒ impossible no-query information gain</p>
+          </div>
+        </div>
+        <div class="panel soft fragment" style="margin-top:16px;">
+          <p class="big center">Simple summary: <strong>quantum states encode global Fourier structure</strong>; classical witnesses/advice can only expose a small number of local points, and the code is chosen so that local information does not assemble into many valid global solutions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <h2>What to emphasize in a live talk</h2>
+        <div class="grid2">
+          <div class="panel">
+            <h3>Conceptual punchline</h3>
+            <ul>
+              <li class="fragment">This is an inherently <strong>classical oracle</strong> problem.</li>
+              <li class="fragment">The quantum advantage comes only from <strong>querying in superposition</strong> and from the ability to use a <strong>quantum witness/advice state</strong>.</li>
+              <li class="fragment">No exotic quantum oracle is needed.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Why the result matters</h3>
+            <ul>
+              <li class="fragment">It gives much stronger evidence that <span class="mono">QMA ≠ QCMA</span>.</li>
+              <li class="fragment">It gives the first unconditional classical oracle evidence that <span class="mono">BQP/qpoly</span> really exceeds <span class="mono">BQP/poly</span>.</li>
+              <li class="fragment">The proof is more structured and conceptually simpler than the recent spectral-Forrelation route.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/math/math.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    controls: true,
+    progress: true,
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    pdfSeparateFragments: false,
+    plugins: [ RevealMath.KaTeX ]
+  });
+</script>
+</body>
+</html>
