@@ -1,6 +1,17 @@
 {
   "research": [
     {
+      "title": "En Route to a Standard QMA1 vs. QCMA Oracle Separation",
+      "authors":[
+        "David Miloschewsky",
+        {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"},
+        {"name": "Dorian Rudolph", "url":"https://dorianrudolph.com"}
+      ],
+      "links":{
+        "arXiv":"https://arxiv.org/abs/2604.26921"
+      }
+    },
+    {
         "title": "From Promises to Totality: A Framework for Ruling Out Quantum Speedups",
         "authors": [
             {"name":"Thomas Huffstutler", "url":"https://thomashuffstutler.com"},
