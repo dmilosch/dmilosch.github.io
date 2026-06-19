@@ -8,6 +8,7 @@
         {"name": "Dorian Rudolph", "url":"https://dorianrudolph.com"}
       ],
       "links":{
+        "MFCS 2026":"https://mfcs2026.irif.fr",
         "arXiv":"https://arxiv.org/abs/2604.26921"
       }
     },
@@ -20,6 +21,7 @@
             { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
         ],
         "links": {
+          "MFCS 2026":"https://mfcs2026.irif.fr",
           "arXiv": "https://arxiv.org/abs/2603.29256"
         }
     },
@@ -40,8 +42,8 @@
         { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
       ],
       "links": {
-        "arXiv": "https://arxiv.org/abs/2411.04085",
-        "Computational Complexity Conference (CCC) 2025": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CCC.2025.12"
+        "CCC 2025": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CCC.2025.12",
+        "arXiv": "https://arxiv.org/abs/2411.04085"
       }
     }
   ],

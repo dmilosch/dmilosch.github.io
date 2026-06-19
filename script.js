@@ -40,9 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         divPub.innerHTML = `${authorHtml}<br>`;
       }
 
-      // Links (e.g., arXiv, DOI)
+      // Links (e.g., conference, arXiv, DOI)
       if (item.links && typeof item.links === 'object') {
-        Object.entries(item.links).forEach(([name, url]) => {
+        const entries = Object.entries(item.links);
+        entries.forEach(([name, url], index) => {
           if (url) {
             const a = document.createElement('a');
             a.href = url;
@@ -55,7 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
             span.textContent = name;
             divPub.appendChild(span);
           }
-          divPub.appendChild(document.createElement('br'));
+
+          if (index < entries.length - 1) {
+            divPub.appendChild(document.createTextNode(' | '));
+          }
         });
       }
 
@@ -139,4 +143,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     target.appendChild(ul);
   }
-}); 
+});
