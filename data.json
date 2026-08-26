@@ -8,8 +8,9 @@
         {"name": "Dorian Rudolph", "url":"https://dorianrudolph.com"}
       ],
       "links":{
-        "MFCS 2026":"https://mfcs2026.irif.fr",
-        "arXiv":"https://arxiv.org/abs/2604.26921"
+        "MFCS 2026":"https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.MFCS.2026.32",
+        "arXiv":"https://arxiv.org/abs/2604.26921",
+        "Slides":"./Projects/Presentations/qcma_qma1_reveal.html"
       }
     },
     {
@@ -21,7 +22,7 @@
             { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
         ],
         "links": {
-          "MFCS 2026":"https://mfcs2026.irif.fr",
+          "MFCS 2026":"https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.MFCS.2026.10",
           "arXiv": "https://arxiv.org/abs/2603.29256"
         }
     },
@@ -67,4 +68,4 @@
       "notes": "Included 7 guest lectures"
     }
   ]
-} 
+}
