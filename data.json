@@ -1,6 +1,15 @@
 {
   "research": [
     {
+      "title":"Promises should be taken seriously: On relativization with promise problems",
+      "authors":[
+         "David Miloschewsky",
+        {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"},
+        {"name": "Dorian Rudolph", "url":"https://dorianrudolph.com"}
+      ],
+      "links":{"arXiv":"https://arxiv.org/abs/2609.07945"}
+    },
+    {
       "title": "En Route to a Standard QMA1 vs. QCMA Oracle Separation",
       "authors":[
         "David Miloschewsky",
