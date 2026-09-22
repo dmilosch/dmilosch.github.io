@@ -1,6 +1,14 @@
 {
   "research": [
     {
+      "title":"Hardness of Pathfinding in a Welded Tree",
+      "authors":[
+         "David Miloschewsky",
+        {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"}
+      ],
+      "links":{"arXiv":"https://arxiv.org/abs/2609.20651"}
+    },
+    {
       "title":"Promises should be taken seriously: On relativization with promise problems",
       "authors":[
          "David Miloschewsky",
