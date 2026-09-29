@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual presentation of Hardness of Pathfinding in a Welded Tree, by David Miloschewsky and Supartha Podder.">
+  <title>Hardness of Pathfinding in a Welded Tree</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="title-slide" id="title" data-part="Opening">
+  <div class="title-rule"></div>
+  <h1>Hardness of Pathfinding<br>in a Welded Tree</h1>
+  <div class="authors"><strong>David Miloschewsky</strong> &nbsp;·&nbsp; Supartha Podder</div>
+  <div class="affiliation">Stony Brook University</div>
+</section>
+
+<section id="construction" data-part="The problem" data-stages="2">
+  <div class="eyebrow">Problem Construction</div>
+  <h2>Welded Trees Graph</h2>
+  <div class="visual graph" data-graph='{"mode":"construction"}'></div>
+  <div class="caption-stack"><div data-show="0">Two binary trees of height \(n\)</div>
+  <div data-show="1"></div><div data-show="2">Joined with a cycle</div></div>
+</section>
+
+<section id="oracle-pause" data-part="The problem">
+  <div class="eyebrow">Problem Construction</div>
+  <h2>Welded Trees Problem</h2>
+  <div class="oracle-layout">
+    <div aria-hidden="true"></div>
+    <div class="visual oracle-graph" data-graph='{"mode":"access","randomLabels":false}'></div>
+  </div>
+</section>
+
+<section id="oracle" data-part="The problem" data-stages="3">
+  <div class="eyebrow">Problem Construction</div>
+  <h2>Welded Trees Problem</h2>
+  <div class="oracle-layout">
+    <div class="oracle-copy">
+      <p class="oracle-premise">Vertices have random <span class="red">labels</span>.</p>
+      <div class="oracle-given" data-from="1">
+        <h3>Given</h3>
+        <ul>
+          <li data-from="1">Label of the <span class="blue">entrance vertex</span></li>
+          <li data-from="2"><span class="purple">Oracle access</span> \(O_{\textup{wt}}\) to labels of neighbors</li>
+        </ul>
+      </div>
+      <div class="oracle-goal" data-from="3">
+        <h3>Goal</h3>
+        <ul><li>Find the <span class="teal">exit label</span></li></ul>
+      </div>
+    </div>
+    <div class="visual oracle-graph" data-graph='{"mode":"access"}'></div>
+  </div>
+</section>
+
+<section id="classical-weld" data-part="The classical obstacle" data-stages="2">
+  <div class="eyebrow">Classical hardness</div><h2>Hitting the weld is easy</h2>
+  <div class="visual graph" data-graph='{"mode":"path","stopAtWeld":true}'></div>
+  <div class="under"></div>
+</section>
+
+<section id="classical-uphill" data-part="The classical obstacle" data-stages="4">
+  <div class="eyebrow">Classical hardness</div><h2>Leaving requires a long upward run</h2>
+  <div class="visual graph" data-graph='{"mode":"uphill"}'></div>
+  <div class="caption-stack">
+    <div data-show="0"></div>
+    <div data-show="1"><span class="teal">1</span> of <span class="coral">2</span> paths go upward</div>
+    <div data-show="2"><span class="teal">1</span> of <span class="coral">4</span> paths go upward</div>
+    <div data-show="3"><span class="teal">1</span> of <span class="coral">8</span> paths go upward</div>
+    <div data-show="4">An upward run succeeds with probability <span class="teal">\(2^{-n}\)</span></div>
+  </div>
+</section>
+
+<section id="classical-collision" data-part="The classical obstacle" data-stages="2">
+  <div class="eyebrow">Classical hardness</div><h2>Collisions are rare</h2>
+  <div class="visual graph" data-graph='{"mode":"collision"}'></div>
+  <div class="caption-stack">
+    <div data-show="0"></div>
+    <div data-show="1">Plausible edges on the weld</div>
+    <div data-show="2">Only small fraction can be hit</div>
+  </div>
+  <div class="cite"><a href="https://doi.org/10.1145/780542.780552">Childs et al., 2003</a></div>
+</section>
+
+<section id="columns" data-part="The quantum walk" data-stages="2">
+  <div class="eyebrow">Quantum exit-finding algorithm</div><h2>Uniform column state</h2>
+  <div class="visual graph column-visual" data-graph='{"mode":"columns"}'></div>
+  <div class="under" data-from="2">\(\displaystyle |c\rangle=\frac{1}{\sqrt{|\operatorname{col}(c)|}}\sum_{v\in\operatorname{col}(c)}|v\rangle\)</div>
+  <div class="cite"><a href="https://doi.org/10.1145/780542.780552">Childs et al., 2003</a></div>
+</section>
+
+<section id="column-split" data-part="The quantum walk" data-stages="3">
+  <div class="eyebrow">Quantum exit-finding algorithm</div><h2>Equal strength in either direction</h2>
+  <div class="shift-definition">
+    <div>\(S|v,\alpha\rangle=|\operatorname{nbr}_{\alpha}(v),\alpha\rangle\)</div>
+    <div data-from="1">\(\displaystyle |c,s\rangle=|c\rangle\otimes\frac{1}{\sqrt{3}}\sum_{\alpha=1}^{3}|\alpha\rangle\)</div>
+  </div>
+  <div class="visual graph column-visual" data-graph='{"mode":"column-split","selectedColumn":2}'></div>
+  <div class="coupling-calculations">
+    <div class="coupling-case" data-from="2">
+      <h3 style="color:#be7b19">\(2\to1\)<span class="coupling-edge-count">4 edges</span></h3>
+      <div class="math-block">\(\displaystyle \langle1,s|S|2,s\rangle=\frac{4}{3\sqrt{2\cdot4}}={\color{#be7b19}\frac{\sqrt{2}}{3}}\)</div>
+    </div>
+    <div class="coupling-case" data-from="3">
+      <h3 style="color:#b84182">\(2\to3\)<span class="coupling-edge-count">8 edges</span></h3>
+      <div class="math-block">\(\displaystyle \langle3,s|S|2,s\rangle=\frac{8}{3\sqrt{8\cdot4}}={\color{#b84182}\frac{\sqrt{2}}{3}}\)</div>
+    </div>
+  </div>
+  <div class="cite"></div>
+</section>
+
+<section id="line" data-part="The quantum walk" data-stages="2">
+  <div class="eyebrow">Quantum exit-finding algorithm</div><h2>The graph becomes a line (for a quantum walk algorithm)</h2>
+  <div class="visual graph column-visual" data-graph='{"mode":"column-line","selectedColumn":2}'></div>
+  <div class="caption-stack column-formula">
+    <div data-show="0">\(2n+2\) column states</div>
+    <div data-show="1">Quantum walk for \(\mathrm{poly}(n)\) steps until uniformly mixed.</div>
+    <div data-show="2">Repeat \(O(n)\) times</div>
+  </div>
+  <div class="cite"><a href="https://cs.uwaterloo.ca/~cleve/pubs/walk_stoc.pdf">Childs et al., 2003</a></div>
+</section>
+
+<section id="route" data-part="The question" data-stages="1">
+  <div class="eyebrow">Our question</div><h2>Can we find the route as well?</h2>
+  <div class="visual graph" data-graph='{"mode":"path","finishOnly":true,"outputNodes":true}'></div>
+  <div class="caption-stack"><div data-show="0"><span class="teal">Output</span> exit label</div><div data-show="1"><span class="teal">Output</span> every label along an entrance-exit path</div></div>
+</section>
+
+<section id="remember" data-part="The question" data-stages="2">
+  <div class="eyebrow">The power of forgetting</div><h2>Remembering changes interference</h2>
+  <div class="interference-input">\(\displaystyle\frac{{\color{#2563eb}|a\rangle}+{\color{#7860ba}|b\rangle}}{\sqrt2}\)</div>
+  <div class="interference-stage">
+    <div class="interference-source" data-show="0">
+      <div class="visual" data-graph='{"mode":"interference","variant":"source"}'></div>
+      <div class="under">Two routes into \(c\)</div>
+    </div>
+    <div class="interference-comparison" data-from="1">
+      <svg class="interference-branches" viewBox="0 0 1128 104" aria-hidden="true">
+        <path d="M564 7V47M564 47C564 80 270 48 270 95M264 87L270 95L276 87" fill="none" stroke="#aebbc6" stroke-width="2"/>
+        <path data-from="2" d="M564 47C564 80 858 48 858 95M852 87L858 95L864 87" fill="none" stroke="#aebbc6" stroke-width="2"/>
+      </svg>
+      <div class="interference-operation">\(O_{\mathrm{wt}}\)</div>
+      <div class="interference-cases">
+        <div>
+          <h3>Quantum walk</h3>
+          <div class="visual" data-graph='{"mode":"interference","variant":"walk"}'></div>
+          <div class="interference-result">\(2|c\rangle\)</div>
+        </div>
+        <div data-from="2">
+          <h3>Recording walk</h3>
+          <div class="visual" data-graph='{"mode":"interference","variant":"recording"}'></div>
+          <div class="interference-result">\(|c\rangle{\color{#2563eb}|a,c\rangle}+|c\rangle{\color{#7860ba}|b,c\rangle}\)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite" data-show="1"></div>
+</section>
+
+<section id="prior-rooted" data-part="The question">
+  <div class="eyebrow">The power of forgetting</div><h2>Remembering a path to the entrance</h2>
+  <div class="visual graph" data-graph='{"mode":"rooted"}'></div>
+  <div class="caption-stack"><div>Rooted and genuine algorithms <span class="red">cannot</span> output a path</div></div>
+  <div class="cite"><a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ITCS.2023.37">Childs-Coudron-Gilani, 2023</a></div>
+  
+</section>
+
+<section id="prior" data-part="The question" data-stages="1">
+  <div class="eyebrow">The power of forgetting</div><h2>Remembering a path to the entrance</h2>
+  <div class="visual graph" data-graph='{"mode":"twofronts"}'></div>
+  <div class="caption-stack"><div>What if we first find the <span class="teal">exit</span>?</div></div>
+  
+</section>
+
+<section id="theorem" data-part="The result">
+  <div class="eyebrow">Our result</div>
+  <div class="theorem-content">
+    <h2>Finding an entrance-exit path requires at least</h2>
+    <div class="hero-math blue">\(\Omega\!\left(2^{n/24}\right)\)</div>
+    <div class="under">queries for constant success probability</div>
+  </div>
+  <!-- <div class="math-block compact" style="margin-top:48px">\(\Pr[\text{output a path}]=O\!\left(\frac{q^6}{N^{1/4}}\right),\qquad N=2^n\)</div>
+  <div class="theorem-detail">For \(q\leq\sqrt N/100\); every quantum query algorithm.</div> -->
+  <!-- <div class="cite">The paper’s random labeled, color-compatible instance distribution, conditioned on a single weld cycle.</div> -->
+  
+</section>
+
+<section id="proof-map" data-part="Proof overview" data-stages="3">
+  <div class="eyebrow">Proof outline</div><h2>Recording information</h2>
+  <div class="proofmap-grid">
+    <div class="proofmap-part" data-from="1">
+      <div class="visual" data-scene="proofmap" data-variant="record"></div>
+      <h3>Recording technique</h3>
+      <small>for the welded tree graph</small>
+    </div>
+    <div class="proofmap-part" data-from="2">
+      <div class="visual proofmap-forest" data-graph='{"mode":"recorded-forest"}'></div>
+      <h3>Avoiding collisions</h3>
+      <small>by modifying the recording oracle</small>
+    </div>
+    <div class="proofmap-part" data-from="3">
+      <div class="visual proofmap-escape" data-graph='{"mode":"uphill","stage":4}'></div>
+      <h3>Paths rarely escape</h3>
+      <small>by analysing interference</small>
+    </div>
+  </div>
+  <!-- <div class="cite" data-from="1">We track retained information using <a href="https://doi.org/10.1007/978-3-030-26951-7_9">Zhandry, 2019</a> and <a href="https://doi.org/10.1145/3798129.3800736">Carolan, 2026</a>, then bound collisions and escape.</div> -->
+  
+</section>
+
+<section id="recording" data-part="1 · Quantum records" data-stages="3">
+  <div class="eyebrow">Compressed oracles</div><h2>Recording database</h2>
+  <div class="database-comparison">
+    <div class="database-state-comparison">
+      <div class="database-average">\(\displaystyle \mathbb E_{\pi\sim S_N}\!\left[|\psi^{O_\pi}\rangle\langle\psi^{O_\pi}|\right]\)</div>
+      <div class="database-equivalence blue" data-from="3">\(\approx\)</div>
+      <div class="database-reduced" data-from="3">\(\displaystyle \operatorname{Tr}_{\mathsf I}\!\left[|\Psi\rangle\langle\Psi|\right]\)</div>
+    </div>
+    <div class="database-record" data-from="1">
+      <div>\(\displaystyle {\color{#7860ba}|I\rangle_{\mathsf I}}=\bigl|[x_1\mapsto y_1,\ldots,x_k\mapsto y_k]\bigr\rangle_{\mathsf I}\)</div>
+      <div class="database-record-property">\(I:[N]\rightharpoonup[N]\) is injective, \(|I|=k\).</div>
+      <!-- \qquad\bigl(I:[N]\rightharpoonup[N],\ \text{injective}\bigr)\) -->
+    </div>
+    <div class="database-joint" data-from="2">\(\displaystyle |\Psi\rangle_{\mathsf A\mathsf I}=\sum_I|\psi_I\rangle_{\mathsf A}\,{\color{#7860ba}|I\rangle_{\mathsf I}}\)</div>
+  </div>
+  <div class="cite"><a href="https://doi.org/10.1007/978-3-030-26951-7_9">Zhandry, 2019</a> &nbsp;·&nbsp; <a href="https://doi.org/10.1145/3798129.3800736">Carolan, 2026</a></div>
+  
+</section>
+
+<section id="recording-compression" data-part="1 · Quantum records" data-stages="3">
+  <div class="eyebrow">Compressed oracles</div><h2>Compression operator \(\mathrm{pC}_x\)</h2>
+  <div class="compression-extension">
+    <div class="recording-math">\(\displaystyle |+_{x,I}\rangle\propto\sum_{y\in[N]\setminus\operatorname{Im}(I)}\bigl|I[x\mapsto y]\bigr\rangle\)</div>
+    <div>\(\bigl(x\notin\operatorname{Dom}(I)\bigr)\)</div>
+  </div>
+  <div class="compression-definitions">
+    <div data-from="1">\(\displaystyle \mathrm{pC}_{x,I}=\mathbb1-\bigl(|I\rangle-|+_{x,I}\rangle\bigr)\bigl(\langle I|-\langle+_{x,I}|\bigr),\)</div>
+    <div data-from="2">\(\displaystyle \mathrm{pC}_x=\bigoplus_{I:\,x\notin\operatorname{Dom}(I)}\mathrm{pC}_{x,I}\)</div>
+  </div>
+  <div class="compression-swap" data-from="3">
+    <div>\(\displaystyle |I\rangle\)</div>
+    <div class="purple">\(\displaystyle \xleftrightarrow{\quad\mathrm{pC}_x\quad}\)</div>
+    <div>\(\displaystyle |+_{x,I}\rangle\)</div>
+  </div>
+  <div class="cite"><a href="https://doi.org/10.1007/978-3-030-26951-7_9">Zhandry, 2019</a> &nbsp;·&nbsp; <a href="https://doi.org/10.1145/3798129.3800736">Carolan, 2026</a></div>
+  
+</section>
+
+<section id="recording-oracle" data-part="1 · Quantum records" data-stages="3">
+  <div class="eyebrow">Compressed oracles</div><h2>Queries</h2>
+  <div class="recording-oracle-rules">
+    <div class="recording-math">\(\displaystyle\mathrm P|x,z\rangle|I\rangle=\begin{cases}|x,z\oplus I(x)\rangle|I\rangle,&x\in\operatorname{Dom}(I),\\[6pt]|x,z\rangle|I\rangle,&x\notin\operatorname{Dom}(I).\end{cases}\)</div>
+    <div class="recording-math" data-from="1">\(\displaystyle\mathrm{pC}=\sum_{x\in[N]}|x\rangle\langle x|_{\mathsf X}\otimes\mathrm{pC}_x\)</div>
+  </div>
+  <div class="recording-oracle-product" data-from="2">\(\displaystyle \mathrm{cpO}=\mathrm{pC}\,\mathrm P\,\mathrm{pC}^\dagger\)</div>
+  <div class="recording-circuit" data-from="3">
+    <svg viewBox="0 0 1128 250" role="img" aria-label="Complete oracle circuit. The queried input x controls database decompression and recompression. Between them, P XORs the database value into answer register z.">
+      <defs><marker id="recording-wire-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#667583" stroke-width="1.5"/></marker></defs>
+      <g class="recording-wires" marker-end="url(#recording-wire-arrow)">
+        <path d="M 233 45 H 1120"/><path d="M 233 110 H 1120"/><path d="M 233 175 H 1120"/>
+      </g>
+      <g class="recording-control">
+        <path d="M 430 45 V 145"/><circle cx="430" cy="45" r="6"/>
+        <path d="M 1030 45 V 145"/><circle cx="1030" cy="45" r="6"/>
+      </g>
+      <rect class="recording-compression-gate" x="360" y="145" width="140" height="60" rx="5"/>
+      <rect class="recording-xor-gate" x="685" y="15" width="100" height="190" rx="5"/>
+      <rect class="recording-compression-gate" x="960" y="145" width="140" height="60" rx="5"/>
+      <g class="recording-wire-labels"><text x="0" y="52">Queried input</text><text x="0" y="117">Answer register</text><text x="0" y="182">Database</text></g>
+      <foreignObject x="151" y="21" width="75" height="48"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math">\(|x\rangle\)</div></foreignObject>
+      <foreignObject x="151" y="86" width="75" height="48"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math">\(|z\rangle\)</div></foreignObject>
+      <foreignObject x="151" y="151" width="75" height="48"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math">\(|I\rangle\)</div></foreignObject>
+      <foreignObject x="360" y="145" width="140" height="60"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math purple">\(\mathrm{pC}_x^\dagger\)</div></foreignObject>
+      <foreignObject x="685" y="79" width="100" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math blue">\(\mathrm P\)</div></foreignObject>
+      <foreignObject x="960" y="145" width="140" height="60"><div xmlns="http://www.w3.org/1999/xhtml" class="recording-circuit-math purple">\(\mathrm{pC}_x\)</div></foreignObject>
+      <g class="recording-gate-labels"><text x="430" y="242">Decompress</text><text x="735" y="242">XOR</text><text x="1030" y="242">Recompress</text></g>
+    </svg>
+  </div>
+  <div class="cite"><a href="https://doi.org/10.1007/978-3-030-26951-7_9">Zhandry, 2019</a> &nbsp;·&nbsp; <a href="https://doi.org/10.1145/3798129.3800736">Carolan, 2026</a></div>
+  
+</section>
+
+<section id="unquery" data-part="1 · Quantum records" data-stages="1">
+  <div class="eyebrow">Compressed oracles</div><h2>Useful statements</h2>
+  <div class="recording-properties">
+    <div class="recording-property property-growth">
+      <h3>Bounded growth</h3>
+      <div>
+        <div class="property-math">\(\displaystyle q\text{ queries}\quad\Longrightarrow\quad |I|\leq q\)</div>
+        <div class="property-explanation">For every database \(I\) in the support of \( \ket{\Psi} \).</div>
+      </div>
+    </div>
+    <div class="recording-property property-fundamental" data-from="1">
+      <h3>Fundamental lemma</h3>
+      <div>
+        <div class="property-math">\(\displaystyle \Pr\!\bigl[\text{Correct output}\bigr]\leq 2\Pr\!\bigl[\text{Output}\subseteq I\bigr]+O\!\left(\frac{\ell^2}{N-q-\ell}\right)\)</div>
+        <div class="property-explanation">For outputs of size \(\ell\).</div>
+      </div>
+    </div>
+  </div>
+  <div class="cite"><a href="https://doi.org/10.1145/3798129.3800736">Carolan, 2026</a></div>
+</section>
+
+<section id="unquery-memory" data-part="1 · Quantum records" data-stages="2">
+  <div class="eyebrow">Compressed oracles</div><h2>Remembering and forgetting</h2>
+  <div class="memory-query-premise">Suppose \(x \notin \mathrm{Dom}(I)\).</div>
+  <div class="memory-query-circuit">
+    <svg viewBox="0 0 1128 300" role="img" aria-label="Initially four register wires with no gates. The first reveal adds two complete oracle calls that undo each other. The second reveal adds an XOR of the answer into the algorithm's separate database between the two calls.">
+      <defs><marker id="memory-wire-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#667583" stroke-width="1.5"/></marker></defs>
+      <g class="recording-wires" marker-end="url(#memory-wire-arrow)">
+        <path d="M 260 35 H 1120"/><path d="M 260 95 H 1120"/><path d="M 260 155 H 1120"/><path d="M 260 230 H 1120"/>
+      </g>
+      <rect class="memory-oracle-gate" x="345" y="9" width="135" height="174" rx="5" data-from="1"/>
+      <rect class="memory-oracle-gate" x="963" y="9" width="135" height="174" rx="5" data-from="1"/>
+      <g class="recording-wire-labels"><text x="0" y="42">Queried input</text><text x="0" y="102">Answer register</text><text x="0" y="162">Recording database</text><text x="0" y="237">Algorithm database</text></g>
+      <foreignObject x="171" y="12" width="105" height="46"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math">\(|x\rangle_{\mathsf X}\)</div></foreignObject>
+      <foreignObject x="171" y="72" width="105" height="46"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math">\(|0\rangle_{\mathsf Y}\)</div></foreignObject>
+      <foreignObject x="171" y="132" width="105" height="46"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math">\(|I\rangle_{\mathsf I}\)</div></foreignObject>
+      <foreignObject x="171" y="207" width="105" height="46"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math blue">\(|0\rangle_{\mathsf D}\)</div></foreignObject>
+      <foreignObject x="345" y="64" width="135" height="62" data-from="1"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math purple">\(\mathrm{cpO}\)</div></foreignObject>
+      <foreignObject x="963" y="64" width="135" height="62" data-from="1"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-circuit-math purple">\(\mathrm{cpO}\)</div></foreignObject>
+      <g data-from="2">
+        <path d="M 720 95 V 230" class="memory-copy-wire"/>
+        <circle cx="720" cy="95" r="6" fill="#2563eb"/>
+        <circle cx="720" cy="230" r="15" fill="white" stroke="#2563eb" stroke-width="2"/>
+        <path d="M 708 230 H 732 M 720 218 V 242" class="memory-copy-wire"/>
+      </g>
+      <g class="recording-gate-labels"><text x="412" y="288" data-from="1">Query</text><text x="1030" y="288" data-from="1">Unquery</text><text x="720" y="288" data-show="1">No copy</text></g>
+      <foreignObject x="555" y="267" width="330" height="33" data-from="2"><div xmlns="http://www.w3.org/1999/xhtml" class="memory-copy-label blue">\(D[x]\leftarrow D[x]\oplus Y\)</div></foreignObject>
+    </svg>
+  </div>
+  <div class="memory-query-outcomes">
+    <div class="memory-query-outcome" data-show="1">
+      <div class="memory-output-math">\(\displaystyle |\Psi_{\mathrm{out}}\rangle=|x,0\rangle_{\mathsf{XY}}|0\rangle_{\mathsf D}|I\rangle_{\mathsf I}\)</div>
+      <div class="memory-output-caption">Both databases return to their initial state.</div>
+    </div>
+    <div class="memory-query-outcome" data-show="2">
+      <div class="memory-output-math retained">\(\displaystyle |\Psi_{\mathrm{out}}\rangle\approx\frac1{\sqrt{N-|I|}}\sum_{y\in[N]\setminus\operatorname{Im}(I)}|x,0\rangle_{\mathsf{XY}}\,{\color{#2563eb}|y\rangle_{\mathsf D}}\,|I[x\mapsto y]\rangle_{\mathsf I}\)</div>
+      <div class="memory-output-caption">Record remains up to error \((N - |I|)^{-1} \).</div>
+    </div>
+  </div>
+</section>
+
+<section id="permutations" data-part="1 · Quantum records" data-stages="6">
+  <div class="eyebrow">Welded trees oracle</div><h2>Label and edge databases</h2>
+  <div class="permutation-layout">
+    <div class="visual permutation-graph" data-graph='{"mode":"permutation-databases"}'></div>
+    <div class="permutation-databases">
+      <div class="permutation-database label-database" data-from="2">
+        <h3>Label database</h3>
+        <div class="permutation-db-type">\(L:[M]\rightharpoonup[M]\)</div>
+        <div class="permutation-db-entry red">\(L=[v_1\mapsto\ell_1]\)</div>
+      </div>
+      <div class="permutation-database edge-database" data-from="5">
+        <h3>Edge database</h3>
+        <div class="permutation-db-type">\(C_{c,{\color{#2563eb}\alpha}}:E_{c,{\color{#2563eb}\alpha}}\rightharpoonup E_{c,{\color{#2563eb}\alpha}}\)</div>
+        <div class="permutation-db-entry blue">\(C_{c,{\color{#2563eb}\alpha}}=[e_1\mapsto e_2]\)</div>
+      </div>
+    </div>
+  </div>
+  <div class="permutation-caption">
+    <div data-show="0"></div>
+    <div data-show="1">Fix an edge coloring.</div>
+    <div data-show="2">Structural vertex \(v_1\) receives label \(\ell_1\).</div>
+    <div data-show="3">Partition edges based on column \(c\) and color \({\color{#2563eb}\alpha}\).</div>
+    <div data-show="4">Permuting parent endpoints within each class.</div>
+    <div data-show="5">Record the new edge from \(\operatorname{tail}(e_1)\) to \(\operatorname{head}(e_2)\).</div>
+    <div data-show="6">Only permute middle edges, keep the outer \(n/2\) levels fixed.</div>
+  </div>
+  <div class="cite">Assume \(M >> N\).</div>
+  
+</section>
+
+<section id="query-pipeline" data-part="1 · Quantum records" data-stages="2">
+  <div class="eyebrow">Welded trees oracle</div><h2>Compression pipeline</h2>
+  <div class="graph-query-registers">
+    <span>Query \(|\ell,{\color{#2563eb}\alpha}\rangle_{\mathsf X}\)</span>
+    <span>Databases \(|L,C\rangle_{\mathsf I}\)</span>
+  </div>
+  <div class="graph-query-steps">
+    <div class="graph-query-step query-unlabel"><div>Unlabel</div><div>\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}}\)</div></div>
+    <div class="graph-query-step query-edge"><div>Edge of color \({\color{#2563eb}\alpha}\)</div><div>\(\mathrm{pC}_{\mathrm{edg}}\)</div></div>
+    <div class="graph-query-step query-relabel"><div>Relabel</div><div>\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}}\)</div></div>
+  </div>
+  <div class="graph-query-swaps">
+    <div class="graph-query-swap" data-show="0">
+      <!-- <div class="graph-query-condition">Fresh label: \(\ell\notin\operatorname{Im}L\)</div>
+      <div class="graph-query-equation">\(\displaystyle |L\rangle\ \longleftrightarrow\ \frac{1}{\sqrt{M-|L|}}\sum_{v\in[M]\setminus\operatorname{Dom}L}|L[v\mapsto\ell]\rangle\)</div>
+      <div class="graph-query-branch">In each branch, \(\;L'=L[v\mapsto\ell]\;\) identifies \(\;v=L'^{-1}(\ell)\).</div> -->
+       <ul class="graph-query-conditions">
+         <li>If \(\ell\ne0\), apply \(\mathrm{pC}_{\ell}\) on \(L^{-1}\).</li>
+         <li>Let \(v=L^{-1}(\ell)\) if recorded.</li>
+       </ul>
+    </div>
+    <div class="graph-query-swap" data-show="1">
+      <!-- <div class="graph-query-condition">At \(\;v=L'^{-1}(\ell)\), choose its color-\(\alpha\) base edge \(\;e\in E_b\).</div>
+      <div class="graph-query-equation">\(\displaystyle |C\rangle\ \longleftrightarrow\ \frac{1}{\sqrt{|E_b|-|C_b|}}\sum_{e'\in E_b\setminus\operatorname{Im}C_b}|C[e\mapsto e']\rangle\)</div>
+      <div class="graph-query-branch">Tail to head: \(\;v=\operatorname{tail}(e),\quad e\notin\operatorname{Dom}C_b,\quad w=\operatorname{head}(e')\).</div> -->
+       <ul class="graph-query-conditions">
+         <li>Let \(e\in E_b\) be the color-\({\color{#2563eb}\alpha}\) edge at \(v\).</li>
+         <li>If \(v\) is known and \(e\) is permuted, compress its entry in \(C_b\).</li>
+         <!-- <li>Otherwise, do nothing.</li> -->
+       </ul>
+    </div>
+    <div class="graph-query-swap" data-show="2">
+      <!-- <div class="graph-query-condition">Give the new vertex a label: \(\;w\in[M]\setminus\operatorname{Dom}L'\).</div>
+      <div class="graph-query-equation">\(\displaystyle |L'\rangle\ \longleftrightarrow\ \frac{1}{\sqrt{M-|L'|}}\sum_{\ell'\in[M]\setminus\operatorname{Im}L'}|L'[w\mapsto\ell']\rangle\)</div>
+      <div class="graph-query-branch">In each branch, the neighbor has label \(\;\ell'\).</div> -->
+       <ul class="graph-query-conditions">
+         <li>Let \(w\) be the endpoint.</li>
+         <li>If \(w\) is defined and neither \(0\) nor \(v\), apply \(\mathrm{pC}^{\mathrm{for}}_w\) to \(L\).</li>
+         <!-- <li>Otherwise, do nothing.</li> -->
+       </ul>
+    </div>
+  </div>
+</section>
+
+<section id="graph-oracle" data-part="1 · Quantum records" data-stages="2">
+  <div class="eyebrow">Welded trees oracle</div><h2>Constructing the oracle \(\mathrm{cpWT}\)</h2>
+  <div class="graph-oracle-xor" data-from="0">
+    <div>\(\displaystyle \mathrm P|\ell,\alpha\rangle|a\rangle|L,C\rangle=|\ell,\alpha\rangle|a\oplus L(w)\rangle|L,C\rangle\)</div>
+    <div class="graph-oracle-xor-condition">Only when \(w\) exists and is in the label database.</div>
+  </div>
+  <div class="graph-oracle-circuit" data-from="1">
+    <svg viewBox="0 0 1128 285" role="img" aria-label="One complete graph query, read left to right: inverse-label compression, edge compression, forward-label compression, XOR the neighbor label into the answer, and the three reverse compressions. The input controls the database operations.">
+      <defs><marker id="graph-oracle-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#667583" stroke-width="1.5"/></marker></defs>
+      <rect class="graph-oracle-boundary" x="226" y="12" width="895" height="253" rx="9"/>
+      <g class="recording-wires" marker-end="url(#graph-oracle-arrow)"><path d="M 214 43 H 1124"/><path d="M 214 108 H 1124"/><path d="M 214 186 H 1124"/></g>
+      <g class="graph-oracle-controls label-controls">
+        <path d="M 295 43 V 155 M 545 43 V 155 M 795 43 V 155 M 1045 43 V 155"/>
+        <circle cx="295" cy="43" r="4"/><circle cx="545" cy="43" r="4"/><circle cx="795" cy="43" r="4"/><circle cx="1045" cy="43" r="4"/>
+      </g>
+      <g class="graph-oracle-controls edge-controls">
+        <path d="M 420 43 V 155 M 920 43 V 155"/>
+        <circle cx="420" cy="43" r="4"/><circle cx="920" cy="43" r="4"/>
+      </g>
+      <g class="graph-oracle-label-gates"><rect x="241" y="155" width="108" height="62" rx="4"/><rect x="491" y="155" width="108" height="62" rx="4"/><rect x="741" y="155" width="108" height="62" rx="4"/><rect x="991" y="155" width="108" height="62" rx="4"/></g>
+      <g class="graph-oracle-edge-gates"><rect x="366" y="155" width="108" height="62" rx="4"/><rect x="866" y="155" width="108" height="62" rx="4"/></g>
+      <rect class="graph-oracle-xor-gate" x="631" y="22" width="78" height="195" rx="4"/>
+      <g class="recording-wire-labels"><text x="0" y="50">Query</text><text x="0" y="115">Answer</text><text x="0" y="193">Databases</text></g>
+      <foreignObject x="114" y="18" width="100" height="50"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-register">\(|\ell,\alpha\rangle\)</div></foreignObject>
+      <foreignObject x="114" y="83" width="100" height="50"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-register">\(|a\rangle\)</div></foreignObject>
+      <foreignObject x="114" y="161" width="100" height="50"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-register">\(|L,C\rangle\)</div></foreignObject>
+      <foreignObject x="241" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate red">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}\dagger}\)</div></foreignObject>
+      <foreignObject x="366" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate blue">\(\mathrm{pC}_{\mathrm{edg}}^\dagger\)</div></foreignObject>
+      <foreignObject x="491" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate red">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}\dagger}\)</div></foreignObject>
+      <foreignObject x="631" y="77" width="78" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate">\(\mathrm P\)</div></foreignObject>
+      <foreignObject x="741" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate red">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}}\)</div></foreignObject>
+      <foreignObject x="866" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate blue">\(\mathrm{pC}_{\mathrm{edg}}\)</div></foreignObject>
+      <foreignObject x="991" y="155" width="108" height="62"><div xmlns="http://www.w3.org/1999/xhtml" class="graph-oracle-gate red">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}}\)</div></foreignObject>
+      <g class="graph-oracle-captions"><text x="420" y="246">Unlabel → Edge → Relabel</text><text x="670" y="246">XOR</text><text x="920" y="246">Recompress</text></g>
+    </svg>
+  </div>
+  <div class="graph-oracle-product" data-from="2">\(\displaystyle \mathrm{cpWT}=\underbrace{\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}}\,\mathrm{pC}_{\mathrm{edg}}\,\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}}}_{\mathrm{pCWT}}\;\mathrm P\;\mathrm{pCWT}^{\dagger}\)</div>
+</section>
+
+<section id="forgetting-walk" data-part="1 · Quantum records" data-stages="4">
+  <div class="eyebrow">Quantum walk with \(\mathrm{cpWT}\)</div><h2>Quantum walks forget</h2>
+  <div class="walk-query-sequence">
+    <div class="walk-query-step walk-compute"><span>\(\mathrm{cpWT}\)</span><small>Compute</small></div>
+    <span class="walk-query-arrow">→</span>
+    <div class="walk-query-step walk-swap"><span>\(\mathrm{SWAP}\)</span><small></small></div>
+    <span class="walk-query-arrow">→</span>
+    <div class="walk-query-step walk-uncompute"><span>\(\mathrm{cpWT}\)</span><small>Uncompute</small></div>
+  </div>
+  <div class="walk-record-layout" data-show="1,2,3,4">
+    <div class="visual walk-record-visual" data-walk-records='{"stageOffset":1}'></div>
+    <div class="walk-record-ledger">
+      <div class="walk-record-heading">Database</div>
+      <div class="walk-record-states">
+        <div data-show="1"><div class="red">\(L=[v\mapsto\ell]\)</div><div>\(C=\bot\)</div></div>
+        <div data-show="2,3"><div class="red">\(\begin{aligned}L=[&v\mapsto\ell,\\[-1pt]&w\mapsto\ell']\end{aligned}\)</div><div class="blue">\(C_b=[e_1\mapsto e_2]\)</div></div>
+        <div data-show="4"><div class="red">\(L=[w\mapsto\ell']\)</div><div>\(C=\bot\)</div></div>
+      </div>
+      <div class="walk-register-states">
+        <div data-show="1">\(|\ell,\alpha,0\rangle_{\mathsf{XY}}\)</div>
+        <div data-show="2">\(|\ell,\alpha,\ell'\rangle_{\mathsf{XY}}\)</div>
+        <div data-show="3">\(|\ell',\alpha,\ell\rangle_{\mathsf{XY}}\)</div>
+        <div data-show="4">\(|\ell',\alpha,0\rangle_{\mathsf{XY}}\)</div>
+      </div>
+    </div>
+  </div>
+  <div class="walk-record-caption">
+    <div data-show="1">Current label.</div>
+    <div data-show="2">Record the neighbor and edge.</div>
+    <div data-show="3">Neighbor becomes the current position.</div>
+    <div data-show="4">Erase the old label and edge.</div>
+  </div>
+  <div class="cite">In-place oracle, \(O(q\,2^{-n/4})\) error after \(q\) queries.</div>
+</section>
+
+<section id="recorded-path" data-part="1 · Quantum records" data-stages="2">
+  <div class="eyebrow">Outputs and records</div><h2>From standard to compressed oracles</h2>
+  <div class="path-record-layout">
+    <div class="path-record-graph">
+      <div class="visual" data-graph='{"mode":"recorded-path"}'></div>
+      <div class="path-output">\(\mathcal P=(0,\alpha_1,\ell_1,\ldots,\alpha_m,\ell_m)\)</div>
+    </div>
+    <div class="path-record-arrow" data-from="1">→</div>
+    <div class="path-record-ledger" data-from="1">
+      <h3>\(|L,C\rangle\)</h3>
+      <div class="path-ledger-block"><small>Label database</small><div class="red">\(L(v_i)=\ell_i\)</div></div>
+      <div class="path-ledger-block"><small>Edge database</small><div class="blue">\(C_{b_i}(e_i)=f_i\)</div><small>for all edge permutation</small></div>
+      <!-- <div class="path-record-sizes">\(|L|\leq2q,\quad |C|\leq q\)</div> -->
+    </div>
+  </div>
+  <div class="path-transfer" data-from="2">\(\displaystyle \Pr\!\bigl[\text{Algorithm succeeds}\bigr]=O\!\left( \Pr\!\bigl[\text{Path recorded} \bigr] +\frac{q^6}{N^{1/4}}\right)\)</div>
+  <div class="cite" data-from="2">Bound depends on the smallest permuted database</div>
+</section>
+
+<section id="fresh" data-part="2 · Fresh growth" data-stages="3">
+  <div class="eyebrow">Fresh oracle</div><h2>Avoiding recorded vertices</h2>
+  <div class="visual fresh-record-visual" data-graph='{"mode":"fresh-records"}'></div>
+  <div class="fresh-math-states">
+    <div data-show="0">
+      <div class="fresh-swap">\(\displaystyle \mathrm{pC}_{\mathrm{edg}}:\quad |C\rangle\longleftrightarrow\frac{1}{\sqrt{|S|}}\sum_{f\in S}|C[e\mapsto f]\rangle\)</div>
+      <div class="fresh-detail">Standard available set \(S=E_b\setminus\operatorname{Im}(C_b)\).</div>
+    </div>
+    <div data-show="1">
+      <div class="fresh-swap">\(\displaystyle {\color{green}\widetilde{\mathrm{pC}}_{\mathrm{edg}}}:\quad |C\rangle\longleftrightarrow\frac{1}{\sqrt{|\mathcal A|}}\sum_{f\in\mathcal A}|C[e\mapsto f]\rangle\)</div>
+      <div class="fresh-detail">Alternative set \(\mathcal{A} = S \setminus \{ \text{recorded}\}, \qquad {\color{#d52c35}|S\setminus\mathcal A|=O(q)}\)</div>
+    </div>
+    <div data-show="2">
+      <div class="fresh-norms">\(\displaystyle \|\mathrm{pC}_{\mathrm{edg}}-{\color{green}\widetilde{\mathrm{pC}}_{\mathrm{edg}}}\|_{\leq q}=O\!\left(\frac{\sqrt q}{N^{1/4}}\right)\quad\Longrightarrow\quad\|\psi_q-\widetilde\psi_q\|=O\!\left(\frac{q^{3/2}}{N^{1/4}}\right)\)</div>
+      <!-- <div class="fresh-detail">Small change per compression. Small change after \(q\) queries.</div> -->
+    </div>
+    <div data-show="3">
+      <div class="fresh-probability">\(\displaystyle \Pr\limits_{\kern0.45em\vphantom{\widetilde{\mathrm{pC}}}\mathrm{pC}_{\mathrm{edg}}\kern-0.45em}\bigl[\text{Path recorded}\bigr]\leq 2\Pr\limits_{\kern0.45em{\color{green}\widetilde{\mathrm{pC}}_{\mathrm{edg}}}\kern-0.45em}\bigl[\text{Path recorded}\bigr]+O\!\left(\frac{q^3}{\sqrt N}\right)\)</div>
+      <!-- <div class="fresh-detail">It remains to bound path records under the fresh oracle.</div> -->
+    </div>
+  </div>
+  <!-- <div class="cite">Dashed arrows are alternative assignments in one adjacent-column class · \(q\leq\sqrt N/100\).</div> -->
+</section>
+
+<section id="forest" data-part="2 · Fresh growth" data-stages="3">
+  <div class="eyebrow">Fresh Oracle</div><h2>Paths must escape</h2>
+  <div class="visual fresh-escape-visual" data-graph='{"mode":"fresh-escape"}'></div>
+  <div class="escape-record-caption">
+    <div data-show="0">New edges cannot join two recorded components.</div>
+    <div data-show="1">When crossing the <span class="blue">weld</span>, the endpoint is fresh.</div>
+    <div data-show="2">Branch grows one fresh <span class="teal">edge</span> at a time.</div>
+    <div data-show="3">Any entrance-exit path must run upwards away from the <span class="blue">weld</span>.</div>
+  </div>
+  <div class="cite"></div>
+</section>
+
+<section id="middle-accented" data-part="2 · Fresh growth">
+  <div class="eyebrow">Escape reduction</div><h2>Paths cross the weld</h2>
+  <div class="visual middle-path-visual" data-graph='{"mode":"middle-path","stage":1,"accentCrossings":true}'></div>
+  <div class="escape-record-caption">
+    <div>Every entrance-exit path crosses the <span class="coral">weld</span> and <span class="teal">cuts</span>.</div>
+  </div>
+</section>
+
+
+<section id="last-insertion" data-part="3 · Bound escape" data-stages="1">
+  <div class="eyebrow">Escape reduction</div><h2>Partition paths by weld</h2>
+  <div class="visual weld-grouping-visual" data-graph='{"mode":"weld-groups"}'></div>
+  <div class="caption-stack weld-grouping-caption">
+    <div data-show="0">For every path, choose a <span class="coral">welded edge \(\rho\)</span>.</div>
+    <div data-show="1">Group by <span class="coral">\(\rho_i\)</span>.</div>
+    <div data-show="2">For any database history with path through <span class="coral">\(\rho\)</span> has some insertion step \(t\) and direction \(\sigma = \rightarrow\).</div>
+  </div>
+  <div class="cite" data-from="2"><span class="coral">\(\rho\)</span> remains in \(I\) until the algorithm terminates.</div>
+</section>
+
+<!-- <section id="escape-setup" data-part="3 · Bound escape">
+  <div class="eyebrow">Fix one insertion</div><h2>Before the crossing</h2>
+  <div class="visual escape-sequence-visual" data-escape-records='{"mode":"setup"}'></div>
+  <div class="escape-sequence-bottom">
+    <div class="escape-sequence-caption">The recorded side is already in place</div>
+  </div>
+</section> -->
+
+<section id="escape-target" data-part="3 · Bound escape" data-stages="5">
+  <div class="eyebrow">Escape Reduction</div><h2>Escaping through \(\rho\)</h2>
+  <div class="visual escape-sequence-visual" data-escape-records='{"mode":"growth"}'></div>
+  <div class="escape-sequence-bottom">
+    <div data-show="0">
+      <div class="escape-sequence-caption">Fix some weld <span class="coral">\(\rho\)</span> inserted at step \(t\) in direction \(\sigma\)</div>
+    </div>
+    <div data-show="1,2,3,4">
+      <div class="escape-sequence-caption">Can the connected component after \(\rho\) escape?</div>
+      <div class="escape-status-key"><span class="teal">Escaped</span><span class="red">Remained</span></div>
+      <!-- <div class="escape-sequence-detail">Extend the paths one edge at a time</div> -->
+    </div>
+    <div data-show="5">
+      <div class="escape-ratio">\(\displaystyle
+        \Pr\!\bigl[\text{Path recorded}\bigr]
+        \leq O(q^2)\max_{\rho,t,\sigma}
+        \Pr\!\bigl[\text{Escape with }\rho\text{ retained}\bigr]
+      \)</div>
+      <div class="escape-sequence-detail">Fix the insertion of \(\rho\) at step \(t\) in direction \(\sigma\)</div>
+    </div>
+  </div>
+</section>
+
+<section id="inside-outside" data-part="3 · Bound escape" data-stages="2">
+  <div class="eyebrow">Escape Probability</div><h2>Color sequences representing paths</h2>
+  <div class="escape-sequence-drawings">
+    <div class="visual" data-show="0,1" data-escape-records='{"mode":"sequences","labelsFrom":1}'></div>
+    <div class="escape-placement-pair" data-show="2">
+      <div class="visual" data-escape-records='{"mode":"sequences","labels":true,"compact":true,"hideBoundaryGuides":true}'></div>
+      <div class="visual" data-escape-records='{"mode":"sequences","placement":1,"labels":true,"compact":true,"hideBoundaryGuides":true}'></div>
+    </div>
+  </div>
+  <div class="escape-sequence-bottom">
+    <div data-show="0">
+      <div class="escape-oracle-key"><span class="blue">\(\alpha_1\)</span><span class="teal">\(\alpha_2\)</span><span class="coral">\(\alpha_3\)</span></div>
+      <div class="escape-sequence-detail">Fix the edge colors on the path</div>
+    </div>
+    <div data-show="1,2" class="escape-word-description">
+      <div class="escape-word-groups">
+        <div class="escape-word-group escape-word-two">
+          <div class="escape-word"><span class="blue">\(\alpha_1\)</span><span class="coral">\(\alpha_3\)</span><span class="escape-word-label">\(\mapsto\ell_1\)</span></div>
+        </div>
+        <div class="escape-word-group escape-word-two escape-word-teal">
+          <div class="escape-word"><span class="teal">\(\alpha_2\)</span><span class="blue">\(\alpha_1\)</span><span class="teal">\(\alpha_2\)</span><span class="coral">\(\alpha_3\)</span><span class="escape-word-label">\(\mapsto\ell_2\)</span></div>
+          <div class="escape-word"><span class="teal">\(\alpha_2\)</span><span class="blue">\(\alpha_1\)</span><span class="coral">\(\alpha_3\)</span><span class="blue">\(\alpha_1\)</span><span class="escape-word-label">\(\mapsto\ell_3\)</span></div>
+        </div>
+      </div>
+      <div class="escape-sequence-detail">Group by color sequences from \(\rho\) and labels, while the structural vertices are variables \({\color{#7860ba}\phi}\).</div>
+    </div>
+  </div>
+</section>
+
+<section id="embeddings" data-part="3 · Bound escape" data-stages="1">
+  <div class="eyebrow">Escape probability</div><h2>Random assignments</h2>
+  <div class="assignment-context">Fix everything except the vertex assignment \({\color{#7860ba}\phi}\) on the colored sequences.</div>
+  <div class="visual assignment-visual" data-good-assignments='{"mode":"sample","stageOffset":1}'></div>
+  <div class="assignment-caption-stack">
+    <div data-show="0"><div class="assignment-caption">Define distribution \({\color{#138a78}\mu}\) over \({\color{#7860ba}\phi}\) by choosing each vertex uniformly from the whole column.</div></div>
+    <div data-show="1"><div class="assignment-caption">Continue with the next color</div></div>
+  </div>
+</section>
+
+<section id="good-assignments" data-part="3 · Bound escape" data-stages="1">
+  <div class="eyebrow">Escape probability</div><h2>Good assignments \({\color{#7860ba}\phi}\)</h2>
+  <div class="visual assignment-visual assignment-conditions-visual" data-good-assignments='{"mode":"conditions"}'></div>
+  <div class="assignment-caption-stack">
+    <div data-show="0"><div class="assignment-caption">Remain on permuted edges</div></div>
+    <div data-show="1"><div class="assignment-caption">Keep base neighborhoods separate from each other and the outside records</div></div>
+  </div>
+  <div class="cite" data-show="1">Slightly stronger condition than freshness.</div>
+</section>
+
+<section id="good-probability" data-part="3 · Bound escape">
+  <div class="eyebrow">Escape probability</div><h2>Assignments in \({\color{#138a78}\mu}\) are good</h2>
+  <div class="assignment-probability-summary">\(\displaystyle \Pr_{{\color{#138a78}\mu}}[\text{Bad assignment}]\leq O\!\left(\frac{q^2}{\sqrt N}\right)\)</div>
+  
+</section>
+
+<section id="good-states" data-part="3 · Bound escape">
+  <div class="eyebrow">Escape probability</div><h2>Good states</h2>
+  <div class="assignment-context">Fix everything in the database \(I_{{\color{#7860ba}\phi}}\) except the vertex assignment \({\color{#7860ba}\phi}\).</div>
+  <div class="good-state-formula">\(\displaystyle
+    |\mathrm{Good}\rangle
+    \propto \sum_{{\color{#7860ba}\phi}\text{ is }\mathrm{good}}
+    \sqrt{{\color{#138a78}\mu}({\color{#7860ba}\phi})}\,
+    |I_{{\color{#7860ba}\phi}}\rangle
+  \)</div>
+  <div class="assignment-caption-stack good-state-caption">
+    <div><div class="assignment-caption">While \(\rho\) survives, the algorithm is approximately in the space of good states.</div></div>
+  </div>
+</section>
+
+
+
+<section id="primitives" data-part="3 · Bound escape" data-stages="11">
+  <div class="eyebrow">Escape probability</div><h2>The state remains good</h2>
+  <div class="primitive-timeline" aria-label="Time runs left to right. Algorithm unitary, one complete modified compressed oracle, algorithm unitary.">
+    <span class="primitive-term primitive-unitary">\(U_j\)</span><span class="primitive-arrow">→</span>
+    <div class="primitive-oracle">
+      <div class="primitive-bracket"><span>\(\widetilde{\mathrm{cpWT}}\)</span></div>
+      <div class="primitive-oracle-terms">
+        <span class="primitive-term primitive-label">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}}\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-edge">\(\widetilde{\mathrm{pC}}_{\mathrm{edg}}\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-label">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}}\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-xor">\(\mathrm P\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-label">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{for}}\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-edge">\(\widetilde{\mathrm{pC}}_{\mathrm{edg}}\)</span><span class="primitive-arrow">→</span>
+        <span class="primitive-term primitive-label">\(\mathrm{pC}_{\mathrm{lab}}^{\mathrm{inv}}\)</span>
+      </div>
+    </div>
+    <span class="primitive-arrow">→</span><span class="primitive-term primitive-unitary">\(U_{j+1}\)</span>
+  </div>
+  <div class="primitive-cases" data-from="4"><span class="primitive-case-outside">Outside edge</span><span class="primitive-case-inside">Inside edge</span><span class="primitive-case-weld">Weld \(\rho\)</span></div>
+  <div class="primitive-explanations">
+    <div data-show="0,1">
+      <h3>Algorithm unitaries \(U_j\) and XOR \(\mathrm{P}\)</h3>
+      <ul class="primitive-bullets">
+        <li data-from="0">Only alters the algorithm registers.</li>
+        <li data-from="1">Behaves the same for every assignment \({\color{#7860ba}\phi}\).</li>
+      </ul>
+    </div>
+    <div data-show="2,3">
+      <h3>Label calls \(\mathrm{pC}_{\mathrm{lab}}\)</h3>
+      <ul class="primitive-bullets">
+        <li data-from="2">Only alters the labels, so new database cannot escape.</li>
+        <li data-from="3">The excluded assignments in the \(\ket{+_L}\) state are bad.</li>
+      </ul>
+    </div>
+    <div data-show="4,5">
+      <h3>Outside edge</h3>
+      <ul class="primitive-bullets">
+        <li data-from="4">Does not allow inside color sequences to escape.</li>
+        <li data-from="5">Can only become bad by being close to inside edges</li>
+      </ul>
+    </div>
+    <div data-show="6,7,8">
+      <h3>Inside edge</h3>
+      <ul class="primitive-bullets">
+        <li data-from="6">The fixed labels and color sequence represents the algorithms knowledge.</li>
+        <li data-from="7">The new amplitudes nearly match the random-assignment weights.</li>
+        <li data-from="8">Erasing reverses the same step.</li>
+      </ul>
+    </div>
+    <div data-show="9,10">
+      <h3>Weld \(\rho\)</h3>
+      <ul class="primitive-bullets">
+        <li data-from="9">We condition on \(\rho\) remaining in the database.</li>
+        <!-- <li data-from="12">Project away terms that erase or replace it.</li> -->
+        <li data-from="10">By the "remembering" argument, this is close to identity.</li>
+      </ul>
+    </div>
+    <div class="primitive-final-equation" data-show="11">
+      \(\displaystyle \text{Error per operation}= O\!\left(\frac{q}{N^{1/4}}\right)\)
+      <!-- <li data-from="15">Combine.</li> -->
+    </div>
+  </div>
+</section>
+
+<section id="orthogonality" data-part="3 · Bound escape" data-stages="2">
+  <div class="eyebrow">Escape probability</div><h2>Errors from different groups are orthogonal</h2>
+  <div class="error-db-context">Fix the operation and query (input \(8\)).</div>
+  <div class="error-orthogonality-body">
+    <ul class="error-orthogonality-bullets">
+      <li data-from="0">Only the queried record can change.</li>
+      <li data-from="1">Removing it from the database identifies exactly one group.</li>
+      <!-- <li data-from="2">What remains identifies exactly one group.</li> -->
+      <li data-from="2">Different groups share no database basis states, so their errors are orthogonal.</li>
+    </ul>
+    <div class="error-simple-panels">
+      <div class="error-simple-group">
+        <div class="error-simple-heading blue">Group 1</div>
+        <div class="error-simple-card">
+          <div>\(2\mapsto7\)</div>
+          <div class="blue">\(5\mapsto3\)</div>
+          <div class="error-db-queried"><span>\(8\mapsto4\)</span></div>
+        </div>
+      </div>
+      <div class="error-simple-group">
+        <div class="error-simple-heading purple">Group 2</div>
+        <div class="error-simple-card">
+          <div>\(2\mapsto7\)</div>
+          <div class="purple">\(5\mapsto9\)</div>
+          <div class="error-db-queried"><span>\(8\mapsto6\)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="error-orthogonality-result" data-from="3">
+    <div class="error-simple-equation">\(\displaystyle \left\|\sum_i e_i\right\|^2=\sum_i\|e_i\|^2\)</div>
+    <div class="error-simple-detail">No cost for the number of groups.</div>
+  </div> -->
+</section>
+
+
+
+<section id="combine" data-part="The result" data-stages="4">
+  <div class="eyebrow">Putting it all together</div><h2>Probability bounds</h2>
+  <div class="probability-seed">
+    <span>Fixed insertion</span>
+    <div>\(\displaystyle \Pr\!\bigl[\text{Escape with }\rho\text{ retained}\bigr]=O\!\left(\frac{q^4}{\sqrt N}\right)\)</div>
+    <!-- <div class="probability-seed-scale">\(T=O(q),\qquad N=2^n\)</div> -->
+  </div>
+  <div class="probability-chain" aria-label="Cumulative upper bounds on the probability of outputting a path">
+    <div class="probability-row" data-from="1">
+      <div class="probability-lhs">\(\Pr[\text{Path output}]\)</div>
+      <div class="probability-rhs">\(\displaystyle \leq O\!\left(\Pr_{\mathrm{cpWT}}[\text{Path recorded}]+{\color{#2563eb}\frac{q^6}{N^{1/4}}}\right)\)</div>
+      <div class="probability-reason">Compressed oracle</div>
+    </div>
+    <div class="probability-row" data-from="2">
+      <div></div>
+      <div class="probability-rhs">\(\displaystyle \leq O\!\left(\Pr_{\widetilde{\mathrm{cpWT}}}[\text{Path recorded}]+{\color{#2563eb}\frac{q^3}{\sqrt N}}+\frac{q^6}{N^{1/4}}\right)\)</div>
+      <div class="probability-reason">Fresh endpoints</div>
+    </div>
+    <div class="probability-row" data-from="3">
+      <div></div>
+      <div class="probability-rhs">\(\displaystyle \leq O\!\left({\color{#2563eb}\frac{q^6}{\sqrt N}}+\frac{q^3}{\sqrt N}+\frac{q^6}{N^{1/4}}\right)\)</div>
+      <div class="probability-reason">Last insertion and escape</div>
+    </div>
+    <div class="probability-row probability-final" data-from="4">
+      <div></div>
+      <div class="probability-rhs">\(\displaystyle \leq O\!\left({\color{#2563eb}\frac{q^6}{N^{1/4}}}\right)\)</div>
+      <div class="probability-reason">Dominant term</div>
+    </div>
+  </div>
+  <div class="probability-consequence" data-show="4">
+    <span>Constant success requires</span>
+    <span>\(\displaystyle q=\Omega(2^{n/24})\)</span>
+  </div>
+</section>
+
+<section id="conclusion" data-part="Conclusion">
+  <div class="eyebrow">Algorithmic Wave-Particle Duality</div><h2>Hardness of pathfinding in a welded tree</h2>
+  <div class="visual graph short" data-graph='{"mode":"path","stage":2}'></div>
+  <div class="result-pair" style="margin-top:12px"><div><div class="result-label">Find the exit</div><div class="result-value teal">\(\Theta(n)\)</div></div><div><div class="result-label">Output a path</div><div class="result-value blue">\(\Omega(2^{n/24})\)</div></div></div>
+  <div class="cite"></div>
+  
+</section>
+
+<section id="references" data-part="References">
+  <div class="eyebrow">Useful references</div><h2>Walking, forgetting, and recording</h2>
+  <div class="refs">
+    <p><a href="https://doi.org/10.1145/780542.780552">Exponential algorithmic speedup<br>by a quantum walk</a><small>Childs, Cleve, Deotto, Farhi, Gutmann, Spielman · 2003</small></p>
+    <p><a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ITCS.2023.37">Quantum algorithms and<br>the power of forgetting</a><small>Childs, Coudron, Gilani · 2023</small></p>
+    <p><a href="https://doi.org/10.1007/978-3-030-26951-7_9">How to record quantum queries</a><small>Zhandry · 2019</small></p>
+    <p><a href="https://doi.org/10.1145/3798129.3800736">Compressed permutation oracles</a><small>Carolan · 2026</small></p>
+    <p><a href="https://doi.org/10.46298/theoretics.25.7">Multidimensional quantum walks</a><small>Jeffery, Zur · 2025</small></p>
+    <p><a href="https://arxiv.org/abs/2404.19476">Global phase helps in quantum search:<br>yet another look at the welded tree problem</a><small>Belovs · 2024</small></p>
+    <p><a href="https://arxiv.org/abs/2609.26712">A quantum lower bound for<br>path finding in welded trees</a><small>Carolan, Childs, Coudron, Gilani · 2026</small></p>
+    <p><a href="https://arxiv.org/abs/2609.28469">Compressed permutation oracles revisited</a><small>Carolan, Majenz · 2026</small></p>
+  </div>
+  
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
+<script src="graph.js"></script>
+<script src="visuals.js"></script>
+<script src="walk-records.js"></script>
+<script src="escape-records.js"></script>
+<script src="good-assignments.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

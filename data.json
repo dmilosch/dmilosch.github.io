@@ -6,7 +6,7 @@
          "David Miloschewsky",
         {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"}
       ],
-      "links":{"arXiv":"https://arxiv.org/abs/2609.20651"}
+      "links":{"arXiv":"https://arxiv.org/abs/2609.20651", "Slides":"./Projects/Presentations/welded_trees/welded_trees_main_presentation.html"}
     },
     {
       "title":"Promises should be taken seriously: On relativization with promise problems",
@@ -61,7 +61,8 @@
       ],
       "links": {
         "CCC 2025": "https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CCC.2025.12",
-        "arXiv": "https://arxiv.org/abs/2411.04085"
+        "arXiv": "https://arxiv.org/abs/2411.04085",
+        "Talk":"https://www.youtube.com/watch?v=zu1Z9Ewnh6Q"
       }
     }
   ],
