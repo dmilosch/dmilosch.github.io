@@ -1,0 +1,76 @@
+DAVID & GYPSY — WEDDING WEBSITE, VERSION TWO
+
+This is the forest-green and gold version inspired by your Knot website.
+The original ivory/burgundy version is preserved separately in ../gypsy-and-david.
+Your selected video remains the large main visual on the Home page.
+
+All wedding details live in dist/wedding-config.js.
+Open that file in a text editor and replace the empty quotation marks with your
+information. Keep the quotation marks and commas in place. Save and reload.
+
+Unknown values should stay as "". The website will display thoughtful
+coming-soon messages. No date, venue, schedule, or guest information is invented.
+
+WHAT YOU CAN EDIT
+  names             Both names and the initials in the header
+  date              The date exactly as you want guests to read it
+  location          City / region shown over your film
+  venue             The venue name in the celebration section
+  welcome / story   Welcome message and optional personal story
+  ceremony          Time, venue, address, and Google Maps link
+  reception         Time, venue, address, and Google Maps link
+  travel            Directions and optional map link
+  accommodation     Hotel recommendations and optional booking link
+  dressCode         Outfit guidance
+  gifts             Your gift message and optional registry link
+  rsvp              RSVP form URL, deadline, and optional message
+  contactEmail      Email address for guest questions
+  thingsToDo        Local recommendations and an optional link
+  questions         Optional question/answer entries for the Q + A page
+
+PAGES
+Navigation switches between Home, Our Story, Dress Code, Q + A, Travel,
+Things to Do, Registry, and RSVP. The URL hash preserves the selected page,
+so links such as index.html#travel and the browser Back button work.
+Ceremony information appears on Home once you fill in the ceremony fields.
+
+RSVP
+The RSVP section says "opening soon" until you add rsvp.url. Once supplied,
+it shows a working button that opens your form in a new tab. This website does
+not collect, submit, or store guest responses itself. Use your chosen RSVP
+service for that. Blank map, booking, registry, and contact links remain hidden.
+
+YOUR FILM
+Source: Material/Videos/Video_20261003_205451_122.mp4
+The full 28.27-second clip is optimized as dist/assets/our-film.mp4.
+It loops automatically, initially muted so browsers allow autoplay. The Sound
+off/on control turns the original audio on or off. A small pause/play button
+remains at the lower left of the film. It pauses for visitors
+who request reduced motion; they can choose Play film. Browsers or devices
+that block autoplay can also use that control. A still from the film provides
+a fallback while loading or if playback is unavailable.
+
+YOUR PHOTO
+dist/assets/our-story.jpg is a web-sized copy of Material/IMG_8986.jpg.
+The original photo and videos have not been modified.
+
+LOCAL PREVIEW
+Open dist/index.html in your browser, or run "npm start" from this folder and
+visit http://127.0.0.1:4173. No npm install or build step is needed.
+
+PUBLISHING
+dist/ contains the complete static website, including the video and photo.
+It can be hosted as-is. The Sites hosting manifest is .openai/hosting.json.
+Local edits must be republished to update the hosted site.
+
+FILES
+dist/wedding-config.js   Your editable details
+dist/index.html          Page sections and default placeholder copy
+dist/styles.css          Typography, colours, layout, mobile styles
+dist/app.js              Configuration, navigation, and playback behaviour
+dist/assets/             Optimized media and favicon
+
+The site uses local Parisienne and Cormorant Garamond fonts and local assets.
+Font licenses are included in font-licenses/ and dist/assets/fonts/.
+It needs no external font service,
+JavaScript library, tracking script, or paid subscription to run locally.

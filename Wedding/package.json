@@ -1,0 +1,10 @@
+{
+  "name": "david-and-gypsy-wedding-v2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gypsy and David's wedding website",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs"
+  }
+}
