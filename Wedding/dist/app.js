@@ -44,11 +44,6 @@
     if (meta) meta.content = description;
   }
   for (const key of ['date', 'location', 'venue']) setText(`[data-field="${key}"]`, config[key]);
-  setText('#welcome-copy', config.welcome);
-  setText('#story-copy', config.story);
-  const photo = document.getElementById('couple-photo');
-  if (photo && clean(config.photo?.src)) photo.src = clean(config.photo.src);
-  if (photo && clean(config.photo?.alt)) photo.alt = clean(config.photo.alt);
 
   for (const event of ['ceremony', 'reception']) {
     for (const key of ['time', 'venue', 'address']) {
@@ -63,7 +58,6 @@
   }
   setText('#travel-copy', config.travel?.details);
   setText('#accommodation-copy', config.accommodation?.details);
-  setText('#dress-code-copy', config.dressCode);
   setText('#gifts-copy', config.gifts?.details);
   setText('#things-copy', config.thingsToDo?.details);
   setLink('#travel-link', config.travel?.mapUrl);
@@ -86,24 +80,56 @@
     setText('#rsvp-copy', config.rsvp?.message);
   }
   const questionList = document.getElementById('questions-list');
-  const questions = Array.isArray(config.questions)
-    ? config.questions.filter(item => clean(item?.question) && clean(item?.answer))
-    : [];
-  if (questionList && questions.length) {
-    questionList.replaceChildren(...questions.map(item => {
-      const details = document.createElement('details');
-      const summary = document.createElement('summary');
-      const answer = document.createElement('p');
-      const icon = document.createElement('span');
-      summary.textContent = clean(item.question);
-      icon.textContent = '+';
-      icon.setAttribute('aria-hidden', 'true');
-      summary.append(icon);
-      answer.textContent = clean(item.answer);
-      details.append(summary, answer);
-      return details;
-    }));
-  }
+  const appendAnswer = (element, value) => {
+    const answer = clean(value);
+    let cursor = 0;
+    // Support simple [label](https://...) links; all other content stays text.
+    for (const match of answer.matchAll(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/gi)) {
+      const href = webUrl(match[2]);
+      if (!href) continue;
+      element.append(document.createTextNode(answer.slice(cursor, match.index)));
+      const link = document.createElement('a');
+      link.textContent = match[1]; link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      element.append(link); cursor = match.index + match[0].length;
+    }
+    element.append(document.createTextNode(answer.slice(cursor)));
+  };
+  const loadQuestions = async () => {
+    if (!questionList) return;
+    try {
+      const response = await fetch('questions.json', { cache: 'no-cache' });
+      if (!response.ok) throw new Error(`Could not load questions.json (${response.status})`);
+      const data = await response.json();
+      if (!Array.isArray(data?.questions) || data.questions.some(item =>
+        typeof item?.question !== 'string' || typeof item?.answer !== 'string'
+      )) throw new Error('questions.json must contain a questions array with question and answer strings.');
+      const questions = data.questions.filter(item => clean(item.question) && clean(item.answer));
+      if (!questions.length) {
+        const placeholder = document.createElement('p');
+        placeholder.textContent = 'More answers will be shared here soon.';
+        questionList.replaceChildren(placeholder);
+        return;
+      }
+      questionList.replaceChildren(...questions.map(item => {
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        const answer = document.createElement('p');
+        const icon = document.createElement('span');
+        summary.textContent = clean(item.question);
+        icon.textContent = '+';
+        icon.setAttribute('aria-hidden', 'true');
+        summary.append(icon);
+        appendAnswer(answer, item.answer);
+        details.append(summary, answer);
+        return details;
+      }));
+    } catch (error) {
+      // Keep the generated HTML answers if the JSON is temporarily unavailable.
+      console.warn('The Q + A could not be loaded.', error);
+    }
+  };
+  // Direct-file previews use the HTML copy generated from questions.json.
+  if (window.location.protocol !== 'file:') loadQuestions();
 
   const menu = document.querySelector('.menu-toggle');
   const navigation = document.getElementById('navigation');
@@ -133,7 +159,7 @@
   const pageLinks = Array.from(document.querySelectorAll('[data-page-link]'));
   const requestedPage = () => {
     let id;
-    try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { id = ''; }
+    try { id = decodeURIComponent(window.location.hash.slice(1).split('?')[0]); } catch { id = ''; }
     return panels.some(panel => panel.id === id) ? id : 'home';
   };
   let currentPage = requestedPage();
