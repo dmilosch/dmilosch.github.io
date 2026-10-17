@@ -177,16 +177,22 @@
   }
   async function start() {
     root.hidden = false;
-    document.getElementById('rsvp-link').hidden = true;
-    document.getElementById('rsvp-pending').hidden = true;
+    // Introductory copy and fallback links are optional in the page layout.
+    for (const id of ['rsvp-link', 'rsvp-pending']) {
+      const element = document.getElementById(id);
+      if (element) element.hidden = true;
+    }
     show(); message('Loading RSVP details…');
     const linkedCode = readLink();
     try {
       settings = await api('/api/config');
-      document.getElementById('rsvp-copy').textContent = settings.welcome;
+      const copy = document.getElementById('rsvp-copy');
+      if (copy) copy.textContent = settings.welcome;
       const deadline = document.getElementById('rsvp-deadline');
-      deadline.hidden = !settings.deadline;
-      if (settings.deadline) deadline.textContent = `Please reply by ${new Date(settings.deadline).toLocaleDateString(undefined, { dateStyle: 'long' })}.`;
+      if (deadline) {
+        deadline.hidden = !settings.deadline;
+        if (settings.deadline) deadline.textContent = `Please reply by ${new Date(settings.deadline).toLocaleDateString(undefined, { dateStyle: 'long' })}.`;
+      }
       login();
       if (linkedCode) await lookup(linkedCode);
     } catch (error) {
