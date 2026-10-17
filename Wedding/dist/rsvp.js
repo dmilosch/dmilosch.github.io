@@ -87,7 +87,7 @@
   }
   function readDraft() {
     const data = new FormData(form);
-    return { version: invitation.version, guests: invitation.guests.map(g => ({ id: g.id, name: data.get(`name-${g.id}`) || '', attending: data.get(`attendance-${g.id}`), ...(invitation.ceremonyInvited ? { ceremonyAttending: data.get(`ceremony-${g.id}`) } : {}), meal: data.get(`meal-${g.id}`) || '', dietary: data.get(`dietary-${g.id}`) || '' })), childrenMeals: Number(data.get('children-meals') || 0), email: data.get('reply-email') || '', message: data.get('reply-message') || '' };
+    return { version: invitation.version, guests: invitation.guests.map(g => ({ id: g.id, name: data.get(`name-${g.id}`) || '', attending: data.get(`attendance-${g.id}`), ...(invitation.ceremonyInvited ? { ceremonyAttending: data.get(`ceremony-${g.id}`) } : {}), ...(invitation.ceremonyInvited && data.get(`ceremony-${g.id}`) === 'yes' ? { transportation: data.get(`transportation-${g.id}`) } : {}), meal: data.get(`meal-${g.id}`) || '', dietary: data.get(`dietary-${g.id}`) || '' })), childrenMeals: Number(data.get('children-meals') || 0), email: data.get('reply-email') || '', message: data.get('reply-message') || '' };
   }
   function edit() {
     if (!settings.open) {
@@ -103,6 +103,7 @@
       const group = make('fieldset'); group.append(make('legend', guest.name));
       const choices = attendanceChoices(group, 'Will you be attending the wedding?', `attendance-${guest.id}`, response.attending);
       const ceremony = invitation.ceremonyInvited ? attendanceChoices(group, 'Will you be attending the ceremony?', `ceremony-${guest.id}`, response.ceremonyAttending) : null;
+      const transportation = ceremony ? attendanceChoices(group, 'Do you want to use our transportation system to the ceremony and then to the party?', `transportation-${guest.id}`, response.transportation) : null;
       const fullName = field(group, 'Confirm full name', `name-${guest.id}`, response.name ?? (guest.is_plus_one ? '' : guest.name), { required: true, maxLength: 120 });
       fullName.input.autocomplete = 'off';
       const fields = make('div'); group.append(fields);
@@ -111,6 +112,13 @@
       const update = () => {
         const attending = choices.querySelector('input:checked')?.value === 'yes';
         const attendingCeremony = ceremony?.querySelector('input:checked')?.value === 'yes';
+        if (transportation) {
+          transportation.parentElement.hidden = !attendingCeremony;
+          transportation.querySelectorAll('input').forEach(input => {
+            input.disabled = !attendingCeremony; input.required = attendingCeremony;
+            if (!attendingCeremony) input.checked = false;
+          });
+        }
         fullName.input.required = !guest.is_plus_one || attending || attendingCeremony;
         fields.hidden = !attending; fields.querySelectorAll('input,select,textarea').forEach(input => { input.disabled = !attending; });
       };
@@ -141,6 +149,7 @@
       const reply = draft.guests.find(g => g.id === guest.id);
       const lines = [`${reply.name || guest.name}`, `Wedding: ${reply.attending === 'yes' ? 'Attending' : 'Declined'}`];
       if (invitation.ceremonyInvited) lines.push(`Ceremony: ${reply.ceremonyAttending === 'yes' ? 'Attending' : 'Declined'}`);
+      if (invitation.ceremonyInvited && reply.ceremonyAttending === 'yes') lines.push(`Transportation to ceremony and party: ${reply.transportation === 'yes' ? 'Yes' : 'No'}`);
       if (reply.attending === 'yes' && reply.meal) lines.push(`Meal: ${reply.meal}`);
       if (reply.attending === 'yes' && reply.dietary) lines.push(`Dietary restrictions/allergies: ${reply.dietary}`);
       list.append(make('li', lines.join('\n')));
