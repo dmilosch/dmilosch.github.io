@@ -10,6 +10,7 @@
     base = url.origin;
   } catch { return; }
   let code = '', invitation, settings, draft, form;
+  const nightOutQuestion = 'Would you be open to joining us and other friends for a night out in Prague two nights before the wedding?';
   const invitedToCeremony = guest => (guest.ceremonyInvited ?? invitation.ceremonyInvited) === true;
   const make = (tag, text, className) => {
     const element = document.createElement(tag);
@@ -88,7 +89,14 @@
   }
   function readDraft() {
     const data = new FormData(form);
-    return { version: invitation.version, guests: invitation.guests.map(g => ({ id: g.id, name: data.get(`name-${g.id}`) || '', attending: data.get(`attendance-${g.id}`), ...(invitedToCeremony(g) ? { ceremonyAttending: data.get(`ceremony-${g.id}`) } : {}), ...(invitedToCeremony(g) && data.get(`ceremony-${g.id}`) === 'yes' ? { transportation: data.get(`transportation-${g.id}`) } : {}), meal: data.get(`meal-${g.id}`) || '', dietary: data.get(`dietary-${g.id}`) || '' })), childrenMeals: Number(data.get('children-meals') || 0), email: data.get('reply-email') || '', message: data.get('reply-message') || '' };
+    const guests = invitation.guests.map(g => ({
+      id: g.id, name: data.get(`name-${g.id}`) || '', attending: data.get(`attendance-${g.id}`),
+      ...(invitedToCeremony(g) ? { ceremonyAttending: data.get(`ceremony-${g.id}`) } : {}),
+      ...(invitedToCeremony(g) && data.get(`ceremony-${g.id}`) === 'yes' ? { transportation: data.get(`transportation-${g.id}`) } : {}),
+      ...(invitation.askNightOut ? { nightOutInterest: data.get(`night-out-${g.id}`) } : {}),
+      meal: data.get(`meal-${g.id}`) || '', dietary: data.get(`dietary-${g.id}`) || ''
+    }));
+    return { version: invitation.version, guests, childrenMeals: Number(data.get('children-meals') || 0), email: data.get('reply-email') || '', message: data.get('reply-message') || '' };
   }
   function edit() {
     if (!settings.open) {
@@ -105,6 +113,7 @@
       const choices = attendanceChoices(group, 'Will you be attending the wedding?', `attendance-${guest.id}`, response.attending);
       const ceremony = invitedToCeremony(guest) ? attendanceChoices(group, 'Will you be attending the ceremony?', `ceremony-${guest.id}`, response.ceremonyAttending) : null;
       const transportation = ceremony ? attendanceChoices(group, 'Do you want to use our transportation system to the ceremony and then to the party?', `transportation-${guest.id}`, response.transportation) : null;
+      const nightOut = invitation.askNightOut ? attendanceChoices(group, nightOutQuestion, `night-out-${guest.id}`, response.nightOutInterest) : null;
       const fullName = field(group, 'Confirm full name', `name-${guest.id}`, response.name ?? (guest.is_plus_one ? '' : guest.name), { required: true, maxLength: 120 });
       fullName.input.autocomplete = 'off';
       const fields = make('div'); group.append(fields);
@@ -120,10 +129,10 @@
             if (!attendingCeremony) input.checked = false;
           });
         }
-        fullName.input.required = !guest.is_plus_one || attending || attendingCeremony;
+        fullName.input.required = !guest.is_plus_one || attending || attendingCeremony || nightOut?.querySelector('input:checked')?.value === 'yes';
         fields.hidden = !attending; fields.querySelectorAll('input,select,textarea').forEach(input => { input.disabled = !attending; });
       };
-      choices.addEventListener('change', update); ceremony?.addEventListener('change', update); update(); form.append(group);
+      choices.addEventListener('change', update); ceremony?.addEventListener('change', update); nightOut?.addEventListener('change', update); update(); form.append(group);
     }
     const children = field(form, 'Number of children’s meals', 'children-meals', draft.childrenMeals ?? 0, { type: 'number', required: true });
     children.input.min = '0'; children.input.step = '1';
@@ -151,6 +160,7 @@
       const lines = [`${reply.name || guest.name}`, `Wedding: ${reply.attending === 'yes' ? 'Attending' : 'Declined'}`];
       if (invitedToCeremony(guest)) lines.push(`Ceremony: ${reply.ceremonyAttending === 'yes' ? 'Attending' : 'Declined'}`);
       if (invitedToCeremony(guest) && reply.ceremonyAttending === 'yes') lines.push(`Transportation to ceremony and party: ${reply.transportation === 'yes' ? 'Yes' : 'No'}`);
+      if (invitation.askNightOut) lines.push(`Night out in Prague: ${reply.nightOutInterest === 'yes' ? 'Interested' : 'Not interested'}`);
       if (reply.attending === 'yes' && reply.meal) lines.push(`Meal: ${reply.meal}`);
       if (reply.attending === 'yes' && reply.dietary) lines.push(`Dietary restrictions/allergies: ${reply.dietary}`);
       list.append(make('li', lines.join('\n')));
