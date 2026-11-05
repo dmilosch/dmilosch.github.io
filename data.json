@@ -1,12 +1,16 @@
 {
   "research": [
     {
-      "title":"Hardness of Pathfinding in a Welded Tree",
+      "title":"Algorithmic Wave-Particle Duality: Pathfinding in Welded Trees is Hard",
       "authors":[
+        {"name":"Joseph Carolan", "url":"https://josephcarolan.com"},
+        {"name":"Andrew M. Childs", "url":"https://www.cs.umd.edu/~amchilds/"},
+        {"name":"Matthew Coudron", "url":"https://matthewcoudron.github.io"},
+        {"name":"Amin Shiraz Gilani","url":"https://quics.umd.edu/people/amin-shiraz-gilani"},
          "David Miloschewsky",
         {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"}
       ],
-      "links":{"arXiv":"https://arxiv.org/abs/2609.20651", "Slides":"./Projects/Presentations/welded_trees/welded_trees_main_presentation.html"}
+      "links":{"arXiv":"https://arxiv.org/abs/2611.05912", "SBU News":"https://news.stonybrook.edu/computer-science/stony-brook-researchers-david-miloschewsky-and-supartha-podder-resolve-a-decades-old-puzzle-about-the-limits-of-quantum-computing/" ,"Slides":"./Projects/Presentations/welded_trees/welded_trees_main_presentation.html", "Earlier paper (subsumed)": "https://arxiv.org/abs/2609.20651"}
     },
     {
       "title":"Promises should be taken seriously: On relativization with promise problems",
