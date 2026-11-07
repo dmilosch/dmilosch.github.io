@@ -3,132 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#26372e">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="The wedding of David and Gypsy. A celebration of love, with all the details to come.">
-  <meta property="og:title" content="David & Gypsy — Our Wedding">
-  <meta property="og:description" content="Join us for our next chapter. Wedding details to come.">
-  <meta property="og:type" content="website">
-  <title>David & Gypsy — Our Wedding</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/fonts/fonts.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="rsvp.css">
-  <script src="wedding-config.js" defer></script>
-  <script src="app.js" defer></script>
-  <script src="rsvp.js" defer></script>
+  <meta name="robots" content="noindex">
+  <title>David &amp; Gypsy — Our Wedding</title>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="mobile-bar">
-      <button type="button" class="menu-toggle" aria-controls="navigation" aria-expanded="false" aria-label="Open navigation"><span class="menu-lines" aria-hidden="true"></span></button>
-      <a class="mobile-monogram" href="#home" data-page-link aria-label="David and Gypsy, home"><span data-initial="first">D</span>&<span data-initial="second">G</span></a>
-    </div>
-    <div class="couple-heading">
-      <h1><a href="#home" data-page-link><span data-name="first">David</span> & <span data-name="second">Gypsy</span></a></h1>
-      <p class="wedding-line"><span data-field="date">September 03 2027</span><span class="line-dot" aria-hidden="true"> · </span><span data-field="location">Prague</span></p>
-    </div>
-    <nav id="navigation" aria-label="Main navigation" class="navigation">
-      <a href="#home" data-page-link aria-current="page">Home</a>
-      <a href="#questions" data-page-link>Q + A</a>
-      <a href="#travel" data-page-link>Travel</a>
-      <a href="#things-to-do" data-page-link>Things to Do</a>
-      <a href="#registry" data-page-link>Registry</a>
-      <a href="#rsvp" data-page-link>RSVP</a>
-    </nav>
-  </header>
-
-  <main id="main" tabindex="-1">
-    <section id="home" data-page aria-labelledby="home-heading">
-      <h2 id="home-heading" class="sr-only" tabindex="-1">Our wedding</h2>
-      <div class="film-wrap">
-        <video id="wedding-video" autoplay muted loop playsinline preload="metadata" poster="assets/our-film-poster.jpg" aria-label="A film of David and Gypsy together"></video>
-        <button id="video-play-toggle" class="film-play-toggle" type="button" aria-label="Pause film"><span id="play-icon" aria-hidden="true">Ⅱ</span></button>
-        <button id="video-toggle" class="film-toggle" type="button" aria-label="Turn sound on" aria-pressed="false"><svg id="video-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg><span id="video-label">Sound off</span></button>
-        <p id="video-status" class="sr-only" role="status" aria-live="polite"></p>
-      </div>
-      <div class="celebration-details">
-        <div class="day-and-place"><p data-field="date">09/03/2027</p><span class="gold-rule" aria-hidden="true"></span><p data-field="location">Prague</p></div>
-        <article id="ceremony-event" class="event" hidden>
-          <h2>The Ceremony</h2>
-          <p class="event-time" data-event="ceremony.time" hidden></p>
-          <p class="event-venue" data-event="ceremony.venue">Castle Karlštejn</p>
-          <p data-event="ceremony.address" hidden></p>
-          <a data-event-link="ceremony" class="text-link" hidden>View location <span aria-hidden="true">↗</span></a>
-        </article>
-        <article class="event">
-          <h2>Dinner and Dancing</h2>
-          <p class="event-time" data-event="reception.time" hidden></p>
-          <p class="event-venue" data-event="reception.venue">Koníčkův Mlýn</p>
-          <p data-event="reception.address"><a href="https://www.google.com/maps/place/Ke+Mlýnu+11,+149+00+Újezd+u+Průhonic,+Czechia/@50.0124304,14.5500767,17z/data=!3m1!4b1!4m6!3m5!1s0x470b8de2ad875dd5:0x9634664fbb3d99bf!8m2!3d50.012427!4d14.5526516!16s%2Fg%2F11yr97rl_j!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D">Ke Mlýnu 11, Újezd u Průhonic, 149 00</a></p>
-          <p class="event-note">5:00 PM</p>
-        </article>
-        <a href="#rsvp" class="gold-button home-rsvp" data-page-link>RSVP</a>
-      </div>
-    </section>
-
-    <section id="questions" data-page class="content-page" aria-labelledby="questions-heading" hidden>
-      <h2 id="questions-heading" class="page-title" tabindex="-1">Q + A</h2>
-      <!-- <p class="page-intro">A few things you might be wondering.<br>We’ll add more answers as the day gets closer.</p> -->
-      <div id="questions-list" class="questions">
-        <!-- questions:start -->
-        <details><summary>When should we arrive to Prague?<span aria-hidden="true">+</span></summary><p>We recommend arriving three days before the wedding to adjust to the time change</p></details>
-        <details><summary>Will roundtrip transportation be provided for the symbolic ceremony to the celebration?<span aria-hidden="true">+</span></summary><p>Yes, please RSVP to register for transportation. Transportation will run on a strict schedule. Please be on the look out for more details closer to the date.</p></details>
-        <details><summary>Can I explore the Karlštejn castle after the ceremony?<span aria-hidden="true">+</span></summary><p>Yes. You will have 2 hours to explore the castle after the ceremony. If you take your own transportation you can leave as you please, however those using the bus will have time to explore for set amount of time.</p></details>
-        <details><summary>What are the accommodation options?<span aria-hidden="true">+</span></summary><p>We recommend the following accommodations for a more affordable option.</p></details>
-        <details><summary>Is there public transportation to the ceremony and the party?<span aria-hidden="true">+</span></summary><p>Yes. To the Karlštejn castle, there is a direct 30-minute train from Smíchovské Nádraží. To the party, there is a 10-minute bus from the metro stop Opatov. It takes over 1 and half hours to go from Karlštejn to the party using public transportation, while 1 hour by bus. If you prefer to use the bus we will rent out, with direct transportation to both please RSVP through your link.</p></details>
-        <details><summary>Are gifts expected?<span aria-hidden="true">+</span></summary><p>Your presence is the greatest gift. For those who would like to give something, we have created <a href="https://www.myregistry.com/wedding-registry/david-miloschewsky-and-gypsy-alvarado-covarrubias-/5685209" target="_blank" rel="noopener noreferrer">a registry</a>.</p></details>
-        <details><summary>Are children invited?<span aria-hidden="true">+</span></summary><p>To help us create a peaceful and intimate atmosphere during our symbolic ceremony and dinner party, we kindly ask to make childcare arrangements for young children. If unable to do so, please be prepared to step outside with your little ones if needed. Thank you for your understanding!</p></details>
-        <details><summary>Will the ceremony be outdoors?<span aria-hidden="true">+</span></summary><p>The dinner party will take place outdoors under a tent. We recommend being ready for rain or sunshine as weather fluctuates.</p></details>
-        <details><summary>When should I book my flight?<span aria-hidden="true">+</span></summary><p>The earlier the better. We recommend using google flights to find good deals.</p></details>
-        <!-- questions:end -->
-      </div>
-      <!-- <a id="contact-link" class="text-link" hidden></a> -->
-    </section>
-
-    <section id="travel" data-page class="content-page" aria-labelledby="travel-heading" hidden>
-      <h2 id="travel-heading" class="page-title" tabindex="-1">Travel</h2>
-      <div class="travel-block"><h3>Getting There</h3><p id="travel-copy">Directions and transport information will be shared here once our venue is confirmed.</p><a id="travel-link" class="text-link" hidden>View directions <span aria-hidden="true">↗</span></a></div>
-      <div class="small-divider" aria-hidden="true"></div>
-      <div class="travel-block"><h3>Where to Stay</h3><p id="accommodation-copy">Our favourite places to stay nearby will be added here soon.</p><a id="accommodation-link" class="text-link" hidden>Explore accommodation <span aria-hidden="true">↗</span></a></div>
-    </section>
-
-    <section id="things-to-do" data-page class="content-page" aria-labelledby="things-heading" hidden>
-      <h2 id="things-heading" class="page-title" tabindex="-1">Things to Do</h2>
-      <div class="ornament" aria-hidden="true">✧</div>
-      <p id="things-copy" class="page-intro">Make a little adventure of it.<br>We’ll share our favourite places to explore, eat, and enjoy nearby.</p>
-      <a id="things-link" class="text-link" hidden>Explore our recommendations <span aria-hidden="true">↗</span></a>
-    </section>
-
-    <section id="registry" data-page class="content-page" aria-labelledby="registry-heading" hidden>
-      <h2 id="registry-heading" class="page-title" tabindex="-1">Registry</h2>
-      <div class="ornament" aria-hidden="true">✧</div>
-      <!-- <p id="gifts-copy" class="page-intro"></p> -->
-      <a id="registry-link" class="gold-button" hidden>Visit our registry</a>
-    </section>
-
-    <section id="rsvp" data-page class="content-page" aria-labelledby="rsvp-heading" hidden>
-      <h2 id="rsvp-heading" class="page-title" tabindex="-1">RSVP</h2>
-      <div class="ornament" aria-hidden="true">✧</div>
-      <!-- <p id="rsvp-copy" class="page-intro">We’d love for you to be part of our day.<br>Invitations and RSVP details will follow.</p> -->
-      <p id="rsvp-deadline" hidden></p>
-      <a id="rsvp-link" class="gold-button" hidden>Kindly RSVP <span aria-hidden="true">↗</span></a>
-      <!-- <p id="rsvp-pending" class="pending-note">RSVP opening soon</p> -->
-      <div id="rsvp-app" class="rsvp-app" hidden></div>
-      <p class="script-note">Until then, all our love.</p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <nav class="footer-navigation" aria-label="Footer navigation">
-      <a href="#home" data-page-link>Home</a><a href="#questions" data-page-link>Q + A</a><a href="#travel" data-page-link>Travel</a><a href="#things-to-do" data-page-link>Things to Do</a><a href="#registry" data-page-link>Registry</a><a href="#rsvp" data-page-link>RSVP</a>
-    </nav>
-    <a href="#home" class="footer-monogram" data-page-link aria-label="Back to home"><span data-initial="first">D</span>&<span data-initial="second">G</span></a>
-    <div class="footer-rule" aria-hidden="true"></div>
-    <p data-field="date">Our next chapter</p>
-    <p class="footer-note">With love, <span data-name="first">David</span> & <span data-name="second">Gypsy</span></p>
-  </footer>
-  <noscript><style>[data-page][hidden]{display:block!important}.menu-toggle{display:none}.navigation{display:flex!important;position:static!important;height:auto!important}.mobile-bar{position:static}</style><p class="noscript-note">Enable JavaScript for the film and the latest wedding details. All sections are available below.</p></noscript>
+  <p>Our wedding website has moved. <a id="continue" href="../../wedding.html">Continue to our wedding website</a>.</p>
+  <script>
+    const destination = new URL("../../wedding.html", window.location.href);
+    destination.search = window.location.search;
+    destination.hash = window.location.hash;
+    document.getElementById('continue').href = destination.href;
+    window.location.replace(destination.href);
+  </script>
 </body>
 </html>

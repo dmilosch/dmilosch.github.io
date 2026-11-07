@@ -5,7 +5,7 @@ import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const args = Object.fromEntries(process.argv.slice(2).map(value => value.replace(/^--/, '').split('=')));
-const root = resolve(args.root || fileURLToPath(new URL('../dist/', import.meta.url)));
+const root = resolve(args.root || fileURLToPath(new URL('../../', import.meta.url)));
 const port = Number(args.port || 4173);
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.ico': 'image/x-icon' };
 
@@ -42,5 +42,5 @@ const server = createServer(async (request, response) => {
     response.writeHead(error.code === 'ENOENT' ? 404 : 500).end(error.code === 'ENOENT' ? 'Not found' : 'Server error');
   }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}\nRoot: ${root}`));
+server.listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}/wedding.html\nRoot: ${root}`));
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => server.close(() => process.exit(0)));

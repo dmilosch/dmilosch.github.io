@@ -1,6 +1,10 @@
 (() => {
   'use strict';
 
+  // Assets live beside this script, independently of the page address.
+  const assetBase = new URL('.', document.currentScript?.src || document.baseURI);
+  const assetUrl = path => new URL(path, assetBase).href;
+
   const config = window.WEDDING || {};
   const clean = value => typeof value === 'string' ? value.trim() : '';
   const setText = (selector, value) => {
@@ -97,7 +101,7 @@
   const loadQuestions = async () => {
     if (!questionList) return;
     try {
-      const response = await fetch('questions.json', { cache: 'no-cache' });
+      const response = await fetch(assetUrl('questions.json'), { cache: 'no-cache' });
       if (!response.ok) throw new Error(`Could not load questions.json (${response.status})`);
       const data = await response.json();
       if (!Array.isArray(data?.questions) || data.questions.some(item =>
@@ -296,9 +300,9 @@
     video.loop = true;
     video.playsInline = true;
     video.autoplay = canPlay() && !reducedMotion.matches;
-    if (clean(config.video?.poster)) video.poster = clean(config.video.poster);
+    if (clean(config.video?.poster)) video.poster = assetUrl(clean(config.video.poster));
     if (clean(config.video?.position)) video.style.objectPosition = clean(config.video.position);
-    video.src = clean(config.video?.src) || 'assets/our-film.mp4';
+    video.src = assetUrl(clean(config.video?.src) || 'assets/our-film.mp4');
     updateControl();
     reducedMotion.addEventListener('change', syncVideo);
     document.addEventListener('visibilitychange', syncVideo);
