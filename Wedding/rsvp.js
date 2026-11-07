@@ -110,7 +110,7 @@
     for (const guest of invitation.guests) {
       const response = draft.guests.find(g => g.id === guest.id) || {};
       const group = make('fieldset'); group.append(make('legend', guest.name));
-      const choices = attendanceChoices(group, 'Will you be attending the wedding?', `attendance-${guest.id}`, response.attending);
+      const choices = attendanceChoices(group, 'Will you be attending the dinner party?', `attendance-${guest.id}`, response.attending);
       const ceremony = invitedToCeremony(guest) ? attendanceChoices(group, 'Will you be attending the ceremony?', `ceremony-${guest.id}`, response.ceremonyAttending) : null;
       const transportation = ceremony ? attendanceChoices(group, 'Do you want to use our transportation system to the ceremony and then to the party?', `transportation-${guest.id}`, response.transportation) : null;
       const nightOut = invitation.askNightOut ? attendanceChoices(group, nightOutQuestion, `night-out-${guest.id}`, response.nightOutInterest) : null;
@@ -157,7 +157,7 @@
     panel.append(heading); const list = make('ul');
     for (const guest of invitation.guests) {
       const reply = draft.guests.find(g => g.id === guest.id);
-      const lines = [`${reply.name || guest.name}`, `Wedding: ${reply.attending === 'yes' ? 'Attending' : 'Declined'}`];
+      const lines = [`${reply.name || guest.name}`, `Dinner party: ${reply.attending === 'yes' ? 'Attending' : 'Declined'}`];
       if (invitedToCeremony(guest)) lines.push(`Ceremony: ${reply.ceremonyAttending === 'yes' ? 'Attending' : 'Declined'}`);
       if (invitedToCeremony(guest) && reply.ceremonyAttending === 'yes') lines.push(`Transportation to ceremony and party: ${reply.transportation === 'yes' ? 'Yes' : 'No'}`);
       if (invitation.askNightOut) lines.push(`Night out in Prague: ${reply.nightOutInterest === 'yes' ? 'Interested' : 'Not interested'}`);
