@@ -31,6 +31,7 @@ window.WEDDING = {
     ]
   },
   accommodation: { details: "", bookingUrl: "" },
+  attire: { details: "Attire details will be specified as we finalize the dinner party details." },
   gifts: {
     details: "",
     registryUrl: "https://www.myregistry.com/wedding-registry/david-miloschewsky-and-gypsy-alvarado-covarrubias-/5685209",

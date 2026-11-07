@@ -104,6 +104,7 @@
       }));
   }
   setText('#accommodation-copy', config.accommodation?.details);
+  setText('#attire-copy', config.attire?.details);
   setText('#gifts-copy', config.gifts?.details);
   setText('#things-copy', config.thingsToDo?.details);
   setLink('#travel-link', config.travel?.mapUrl);
