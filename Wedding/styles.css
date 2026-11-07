@@ -20,3 +20,9 @@
 /* The main control switches sound; the small left control keeps the film pausable. */
 #video-icon{width:17px;height:17px;flex:none}.sound-waves{display:none}.film-toggle[aria-pressed=true] .sound-waves{display:block}.film-toggle[aria-pressed=true] .sound-cross{display:none}.film-play-toggle{position:absolute;left:18px;bottom:16px;width:41px;height:41px;display:flex;align-items:center;justify-content:center;border:1px solid #e6c79270;background:#16251de8;color:#ffe4b6;font-family:Arial,sans-serif;font-size:15px;line-height:1}.film-play-toggle:hover{background:var(--green)}
 @media(max-width:767px){#video-icon{width:15px;height:15px}.film-play-toggle{left:9px;bottom:9px;width:33px;height:33px;font-size:12px}}
+
+/* Getting There shares the dinner venue settings and keeps each route easy to scan. */
+.travel-arrival{max-width:650px}.travel-arrival .travel-venue{font-size:28px;font-style:italic;margin-top:8px}.travel-arrival #travel-address{margin-top:4px;font-size:20px;max-width:100%;overflow-wrap:anywhere}.travel-options{display:grid;gap:26px;text-align:left;margin-top:36px}.travel-option{border-top:1px solid var(--line);padding-top:22px}.travel-option h4{font-size:25px;font-style:italic;font-weight:400;line-height:1.4;margin:0 0 9px}.travel-option p{font-size:20px;line-height:1.65}.travel-option .text-link{margin-top:12px}.travel-option a{max-width:100%;overflow-wrap:anywhere}
+@media(max-width:767px){.travel-arrival .travel-venue{font-size:26px}.travel-arrival #travel-address{font-size:19px}.travel-option h4{font-size:23px}.travel-option p{font-size:19px}}
+
+.travel-option p a{text-decoration:underline;text-underline-offset:.18em}

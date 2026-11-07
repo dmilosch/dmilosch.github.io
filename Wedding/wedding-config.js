@@ -14,8 +14,22 @@ window.WEDDING = {
     position: "50% 50%", // Adjust the crop if needed.
   },
   ceremony: { time: "", venue: "", address: "", mapUrl: "" },
-  reception: { time: "", venue: "", address: "", mapUrl: "" },
-  travel: { details: "", mapUrl: "" },
+  reception: { time: "", venue: "Koníčkův Mlýn", address: "Ke Mlýnu 11, Újezd u Průhonic, 149 00", mapUrl: "https://www.google.com/maps/place/Ke+Mlýnu+11,+149+00+Újezd+u+Průhonic,+Czechia/@50.0124304,14.5500767,17z/data=!3m1!4b1!4m6!3m5!1s0x470b8de2ad875dd5:0x9634664fbb3d99bf!8m2!3d50.012427!4d14.5526516!16s%2Fg%2F11yr97rl_j!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D" },
+  // Getting There: edit this text and the transport options below.
+  travel: {
+    "details": "Dinner and dancing will take place at:",
+    "mapUrl": "",
+    "options": [
+      {
+        "title": "Public transport",
+        "details": "Take the red Metro C line to Opatov, then bus 122 or 363 to Újezd u Průhonic. Afterwards, it is a 5 minute walk to the venue. Check check [IDOS](https://idos.cz/pid/spojeni/) for current routes and departure times."
+      },
+      {
+        "title": "By car or taxi",
+        "details": "Use the address above as your destination. You can drive or take a taxi directly to the venue."
+      }
+    ]
+  },
   accommodation: { details: "", bookingUrl: "" },
   gifts: {
     details: "",

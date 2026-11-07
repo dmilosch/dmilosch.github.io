@@ -12,10 +12,10 @@
   <title>David & Gypsy — Our Wedding</title>
   <link rel="icon" href="Wedding/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="Wedding/assets/fonts/fonts.css">
-  <link rel="stylesheet" href="Wedding/styles.css">
+  <link rel="stylesheet" href="Wedding/styles.css?v=inline-idos-1">
   <link rel="stylesheet" href="Wedding/rsvp.css">
-  <script src="Wedding/wedding-config.js" defer></script>
-  <script src="Wedding/app.js?v=qa-json-1" defer></script>
+  <script src="Wedding/wedding-config.js?v=inline-idos-1" defer></script>
+  <script src="Wedding/app.js?v=inline-idos-1" defer></script>
   <script src="Wedding/rsvp.js" defer></script>
   <link rel="canonical" href="https://miloschewsky.com/wedding.html">
 </head>
@@ -44,9 +44,9 @@
     <section id="home" data-page aria-labelledby="home-heading">
       <h2 id="home-heading" class="sr-only" tabindex="-1">Our wedding</h2>
       <div class="film-wrap">
-        <video id="wedding-video" autoplay muted loop playsinline preload="metadata" poster="Wedding/assets/our-film-poster.jpg" aria-label="A film of David and Gypsy together"></video>
+        <video id="wedding-video" autoplay loop playsinline preload="metadata" poster="Wedding/assets/our-film-poster.jpg" aria-label="A film of David and Gypsy together"></video>
         <button id="video-play-toggle" class="film-play-toggle" type="button" aria-label="Pause film"><span id="play-icon" aria-hidden="true">Ⅱ</span></button>
-        <button id="video-toggle" class="film-toggle" type="button" aria-label="Turn sound on" aria-pressed="false"><svg id="video-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg><span id="video-label">Sound off</span></button>
+        <button id="video-toggle" class="film-toggle" type="button" aria-label="Turn sound off" aria-pressed="true"><svg id="video-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-cross" d="m16 9 6 6m0-6-6 6"/></svg><span id="video-label">Sound on</span></button>
         <p id="video-status" class="sr-only" role="status" aria-live="polite"></p>
       </div>
       <div class="celebration-details">
@@ -62,7 +62,7 @@
           <h2>Dinner and Dancing</h2>
           <p class="event-time" data-event="reception.time" hidden></p>
           <p class="event-venue" data-event="reception.venue">Koníčkův Mlýn</p>
-          <p data-event="reception.address"><a href="https://www.google.com/maps/place/Ke+Mlýnu+11,+149+00+Újezd+u+Průhonic,+Czechia/@50.0124304,14.5500767,17z/data=!3m1!4b1!4m6!3m5!1s0x470b8de2ad875dd5:0x9634664fbb3d99bf!8m2!3d50.012427!4d14.5526516!16s%2Fg%2F11yr97rl_j!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D">Ke Mlýnu 11, Újezd u Průhonic, 149 00</a></p>
+          <p><a data-event="reception.address" data-event-link="reception" href="https://www.google.com/maps/place/Ke+Mlýnu+11,+149+00+Újezd+u+Průhonic,+Czechia/@50.0124304,14.5500767,17z/data=!3m1!4b1!4m6!3m5!1s0x470b8de2ad875dd5:0x9634664fbb3d99bf!8m2!3d50.012427!4d14.5526516!16s%2Fg%2F11yr97rl_j!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D">Ke Mlýnu 11, Újezd u Průhonic, 149 00</a></p>
           <p class="event-note">5:00 PM</p>
         </article>
         <a href="#rsvp" class="gold-button home-rsvp" data-page-link>RSVP</a>
@@ -81,7 +81,14 @@
 
     <section id="travel" data-page class="content-page" aria-labelledby="travel-heading" hidden>
       <h2 id="travel-heading" class="page-title" tabindex="-1">Travel</h2>
-      <div class="travel-block"><h3>Getting There</h3><p id="travel-copy">Directions and transport information will be shared here once our venue is confirmed.</p><a id="travel-link" class="text-link" hidden>View directions <span aria-hidden="true">↗</span></a></div>
+      <div class="travel-block travel-arrival">
+        <h3>Getting There</h3>
+        <p id="travel-copy"></p>
+        <p class="travel-venue" data-event="reception.venue"></p>
+        <p><a id="travel-address" class="text-link" data-event="reception.address" data-event-link="reception" hidden></a></p>
+        <div id="travel-options" class="travel-options"></div>
+        <a id="travel-link" class="text-link" hidden>View directions <span aria-hidden="true">↗</span></a>
+      </div>
       <div class="small-divider" aria-hidden="true"></div>
       <div class="travel-block"><h3>Where to Stay</h3><p id="accommodation-copy">Our favourite places to stay nearby will be added here soon.</p><a id="accommodation-link" class="text-link" hidden>Explore accommodation <span aria-hidden="true">↗</span></a></div>
     </section>

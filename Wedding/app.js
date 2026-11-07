@@ -22,14 +22,30 @@
       return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
     } catch { return null; }
   };
+  const appendLinkedText = (element, value) => {
+    const answer = clean(value);
+    let cursor = 0;
+    // Support simple [label](https://...) links; all other content stays text.
+    for (const match of answer.matchAll(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/gi)) {
+      const href = webUrl(match[2]);
+      if (!href) continue;
+      element.append(document.createTextNode(answer.slice(cursor, match.index)));
+      const link = document.createElement('a');
+      link.textContent = match[1]; link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      element.append(link); cursor = match.index + match[0].length;
+    }
+    element.append(document.createTextNode(answer.slice(cursor)));
+  };
   const setLink = (selector, value) => {
-    const element = document.querySelector(selector);
+    const elements = document.querySelectorAll(selector);
     const url = webUrl(value);
-    if (!element || !url) return false;
-    element.href = url;
-    element.target = '_blank';
-    element.rel = 'noopener noreferrer';
-    element.hidden = false;
+    if (!elements.length || !url) return false;
+    elements.forEach(element => {
+      element.href = url;
+      element.target = '_blank';
+      element.rel = 'noopener noreferrer';
+      element.hidden = false;
+    });
     return true;
   };
   const first = clean(config.names?.first) || 'David';
@@ -61,6 +77,32 @@
     if (ceremony) ceremony.hidden = false;
   }
   setText('#travel-copy', config.travel?.details);
+  const travelOptions = document.getElementById('travel-options');
+  if (travelOptions && Array.isArray(config.travel?.options)) {
+    travelOptions.replaceChildren(...config.travel.options
+      .filter(option => clean(option?.title) && clean(option?.details))
+      .map(option => {
+        const section = document.createElement('section');
+        section.className = 'travel-option';
+        const heading = document.createElement('h4');
+        heading.textContent = clean(option.title);
+        const description = document.createElement('p');
+        appendLinkedText(description, option.details);
+        section.append(heading, description);
+        const localLink = clean(option.url).startsWith('#');
+        const href = localLink ? clean(option.url) : webUrl(option.url);
+        if (href && clean(option.linkLabel)) {
+          const link = document.createElement('a');
+          link.className = 'text-link';
+          link.textContent = clean(option.linkLabel);
+          link.href = href;
+          if (localLink) link.setAttribute('data-page-link', '');
+          else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+          section.append(link);
+        }
+        return section;
+      }));
+  }
   setText('#accommodation-copy', config.accommodation?.details);
   setText('#gifts-copy', config.gifts?.details);
   setText('#things-copy', config.thingsToDo?.details);
@@ -84,20 +126,6 @@
     setText('#rsvp-copy', config.rsvp?.message);
   }
   const questionList = document.getElementById('questions-list');
-  const appendAnswer = (element, value) => {
-    const answer = clean(value);
-    let cursor = 0;
-    // Support simple [label](https://...) links; all other content stays text.
-    for (const match of answer.matchAll(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/gi)) {
-      const href = webUrl(match[2]);
-      if (!href) continue;
-      element.append(document.createTextNode(answer.slice(cursor, match.index)));
-      const link = document.createElement('a');
-      link.textContent = match[1]; link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer';
-      element.append(link); cursor = match.index + match[0].length;
-    }
-    element.append(document.createTextNode(answer.slice(cursor)));
-  };
   const questionStatus = message => {
     const paragraph = document.createElement('p');
     paragraph.setAttribute('role', 'status');
@@ -135,7 +163,7 @@
         icon.textContent = '+';
         icon.setAttribute('aria-hidden', 'true');
         summary.append(icon);
-        appendAnswer(answer, item.answer);
+        appendLinkedText(answer, item.answer);
         details.append(summary, answer);
         return details;
       }));
@@ -313,8 +341,9 @@
       }
     });
     video.setAttribute('aria-label', `A film of ${first} and ${second} together`);
-    video.muted = true;
-    video.defaultMuted = true;
+    // Start with sound; playVideo falls back to muted playback if autoplay is blocked.
+    video.muted = false;
+    video.defaultMuted = false;
     video.loop = true;
     video.playsInline = true;
     video.autoplay = canPlay() && !reducedMotion.matches;
