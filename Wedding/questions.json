@@ -33,6 +33,10 @@
       "answer": "The dinner party will take place outdoors under a tent. We recommend being ready for rain or sunshine as weather fluctuates."
     },
     {
+      "question": "What weather conditions should we expect?",
+      "answer": "The temperature is usually between 70°F (21°C) to 80°F (27°C) during the day and 50°F (10°C) to 60°F (15°C) during the night."
+    },
+    {
       "question": "When should I book my flight?",
       "answer": "The earlier the better. We recommend using google flights to find good deals."
     }

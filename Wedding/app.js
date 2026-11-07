@@ -98,10 +98,22 @@
     }
     element.append(document.createTextNode(answer.slice(cursor)));
   };
+  const questionStatus = message => {
+    const paragraph = document.createElement('p');
+    paragraph.setAttribute('role', 'status');
+    paragraph.textContent = message;
+    return paragraph;
+  };
   const loadQuestions = async () => {
-    if (!questionList) return;
+    if (!questionList || questionList.getAttribute('aria-busy') === 'true') return;
+    if (window.location.protocol === 'file:') {
+      questionList.replaceChildren(questionStatus('The Q + A needs the local preview or published website to load. Start the preview with npm start in the Wedding folder, then open http://127.0.0.1:4173/wedding.html#questions.'));
+      return;
+    }
+    questionList.setAttribute('aria-busy', 'true');
+    questionList.replaceChildren(questionStatus('Loading questions and answers…'));
     try {
-      const response = await fetch(assetUrl('questions.json'), { cache: 'no-cache' });
+      const response = await fetch(assetUrl('questions.json'), { cache: 'no-store', signal: AbortSignal.timeout(15000) });
       if (!response.ok) throw new Error(`Could not load questions.json (${response.status})`);
       const data = await response.json();
       if (!Array.isArray(data?.questions) || data.questions.some(item =>
@@ -128,12 +140,18 @@
         return details;
       }));
     } catch (error) {
-      // Keep the generated HTML answers if the JSON is temporarily unavailable.
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'gold-button';
+      retry.textContent = 'Try again';
+      retry.addEventListener('click', loadQuestions);
+      questionList.replaceChildren(questionStatus('We couldn’t load the questions and answers. Please try again.'), retry);
       console.warn('The Q + A could not be loaded.', error);
+    } finally {
+      questionList.removeAttribute('aria-busy');
     }
   };
-  // Direct-file previews use the HTML copy generated from questions.json.
-  if (window.location.protocol !== 'file:') loadQuestions();
+  loadQuestions();
 
   const menu = document.querySelector('.menu-toggle');
   const navigation = document.getElementById('navigation');
