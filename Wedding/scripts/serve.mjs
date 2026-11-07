@@ -42,5 +42,5 @@ const server = createServer(async (request, response) => {
     response.writeHead(error.code === 'ENOENT' ? 404 : 500).end(error.code === 'ENOENT' ? 'Not found' : 'Server error');
   }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}/wedding.html\nRoot: ${root}`));
+server.listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}/gypsyanddavid.html\nRoot: ${root}`));
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => server.close(() => process.exit(0)));

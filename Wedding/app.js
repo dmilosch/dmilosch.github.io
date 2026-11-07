@@ -136,7 +136,7 @@
   const loadQuestions = async () => {
     if (!questionList || questionList.getAttribute('aria-busy') === 'true') return;
     if (window.location.protocol === 'file:') {
-      questionList.replaceChildren(questionStatus('The Q + A needs the local preview or published website to load. Start the preview with npm start in the Wedding folder, then open http://127.0.0.1:4173/wedding.html#questions.'));
+      questionList.replaceChildren(questionStatus('The Q + A needs the local preview or published website to load. Start the preview with npm start in the Wedding folder, then open http://127.0.0.1:4173/gypsyanddavid.html#questions.'));
       return;
     }
     questionList.setAttribute('aria-busy', 'true');
