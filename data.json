@@ -1,6 +1,15 @@
 {
   "research": [
     {
+      "title":"A short proof of the Aaronson-Ambainis Conjecture via the completion framework",
+      "authors":[
+        {"name":"Thomas Huffstutler", "url":"https://thomashuffstutler.com"},
+        "David Miloschewsky",
+        { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
+      ],
+      "links":{"PDF":"./Projects/pdfs/short_aa.pdf"}
+    },
+    {
       "title":"Algorithmic Wave-Particle Duality: Pathfinding in Welded Trees is Hard",
       "authors":[
         {"name":"Joseph Carolan", "url":"https://josephcarolan.com"},
