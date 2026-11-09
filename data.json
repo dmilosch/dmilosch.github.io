@@ -7,7 +7,7 @@
         "David Miloschewsky",
         { "name": "Supartha Podder", "url": "https://www.suparthapodder.com" }
       ],
-      "links":{"PDF":"./Projects/pdfs/short_aa.pdf"}
+      "links":{"Github link":"https://github.com/Complexitygarden/complexitygarden.github.io/blob/main/Papers/simple_aa.pdf"}
     },
     {
       "title":"Algorithmic Wave-Particle Duality: Pathfinding in Welded Trees is Hard",
