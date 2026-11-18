@@ -136,14 +136,8 @@
     }
     const children = field(form, 'Number of children’s meals', 'children-meals', draft.childrenMeals ?? 0, { type: 'number', required: true });
     children.input.min = '0'; children.input.step = '1';
-    const childrenHelp = make('p', 'Enter 0 if none are needed. Count only children attending with your party.', 'rsvp-help');
+    const childrenHelp = make('p', 'Include children attending with your family, even if they are not listed on the invitation. Enter 0 if none are needed.', 'rsvp-help');
     childrenHelp.id = 'children-meals-help'; children.input.setAttribute('aria-describedby', childrenHelp.id); children.wrapper.append(childrenHelp);
-    const updateChildren = () => {
-      const count = form.querySelectorAll('input[name^="attendance-"][value="yes"]:checked').length;
-      children.wrapper.hidden = !count; children.input.disabled = !count; children.input.max = String(count);
-      if (!count) children.input.value = '0';
-    };
-    form.addEventListener('change', updateChildren); updateChildren();
     if (settings.askContactEmail) field(form, 'Contact email (optional)', 'reply-email', draft.email, { type: 'email', maxLength: 254 });
     if (settings.askMessage) field(form, 'Any questions/Comments (optional)', 'reply-message', draft.message, { type: 'textarea', maxLength: 2000 });
     const next = make('button', 'Review my reply', 'gold-button'); next.type = 'submit'; form.append(next);
