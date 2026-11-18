@@ -1,0 +1,30 @@
+{
+  "introduction": "We recommend staying in the city centre, ideally on or near Wenceslas Square, close to the metro and Prague's historic centre. Below are several hotels we recommend.",
+  "hotels": [
+    {
+      "name": "EA Hotel Rokoko",
+      "bookingUrl": "https://www.booking.com/hotel/cz/hotelrokoko.html",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=EA%20Hotel%20Rokoko%2C%20V%C3%A1clavsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%2038%2C%20Praha%201%2C%20Czechia"
+    },
+    {
+      "name": "EA ApartHotel Melantrich",
+      "bookingUrl": "https://www.booking.com/hotel/cz/apartments-wenceslas-square-36.html",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=EA%20ApartHotel%20Melantrich%2C%20V%C3%A1clavsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%2036%2C%20Praha%201%2C%20Czechia"
+    },
+    {
+      "name": "Hotel Liberty",
+      "bookingUrl": "https://www.booking.com/hotel/cz/liberty.en-gb.html",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Hotel%20Liberty%2C%2028.%20%C5%99%C3%ADjna%2011%2F376%2C%20Praha%201%2C%20Czechia"
+    },
+    {
+      "name": "Occidental Praha Wilson",
+      "bookingUrl": "https://www.booking.com/hotel/cz/occidental-praha-wilson.html",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Occidental%20Praha%20Wilson%2C%20V%C3%A1clavsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%2059%2C%20Praha%201%2C%20Czechia"
+    },
+    {
+      "name": "Jalta Boutique Hotel",
+      "bookingUrl": "https://www.booking.com/hotel/cz/jalta.html",
+      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jalta%20Boutique%20Hotel%2C%20V%C3%A1clavsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%2045%2F818%2C%20Praha%201%2C%20Czechia"
+    }
+  ]
+}

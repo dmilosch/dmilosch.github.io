@@ -30,7 +30,7 @@ window.WEDDING = {
       }
     ]
   },
-  accommodation: { details: "", bookingUrl: "" },
+  // Edit Where to Stay in hotels.json.
   attire: { details: "Attire details will be specified as we finalize the dinner party details." },
   gifts: {
     details: "",

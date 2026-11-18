@@ -103,12 +103,12 @@
         return section;
       }));
   }
-  setText('#accommodation-copy', config.accommodation?.details);
+  // Where to Stay loads its content directly from hotels.json below.
   setText('#attire-copy', config.attire?.details);
   setText('#gifts-copy', config.gifts?.details);
   setText('#things-copy', config.thingsToDo?.details);
   setLink('#travel-link', config.travel?.mapUrl);
-  setLink('#accommodation-link', config.accommodation?.bookingUrl);
+
   setLink('#registry-link', config.gifts?.registryUrl);
   setLink('#things-link', config.thingsToDo?.url);
   const email = clean(config.contactEmail);
@@ -181,6 +181,72 @@
     }
   };
   loadQuestions();
+
+  const hotelContent = document.getElementById('hotel-content');
+  const loadHotels = async () => {
+    if (!hotelContent || hotelContent.getAttribute('aria-busy') === 'true') return;
+    if (window.location.protocol === 'file:') {
+      hotelContent.replaceChildren(questionStatus('Open the local preview or published website to see the hotel recommendations.'));
+      return;
+    }
+    hotelContent.setAttribute('aria-busy', 'true');
+    hotelContent.replaceChildren(questionStatus('Loading hotel recommendations…'));
+    try {
+      const response = await fetch(assetUrl('hotels.json'), { cache: 'no-store', signal: AbortSignal.timeout(15000) });
+      if (!response.ok) throw new Error('Could not load hotels.json (' + response.status + ')');
+      const data = await response.json();
+      const validHotelLink = value => typeof value === 'string' &&
+        (!clean(value) || (/^https?:\/\//i.test(clean(value)) && webUrl(value)));
+      if (typeof data?.introduction !== 'string' || !Array.isArray(data.hotels) || data.hotels.some(hotel =>
+        typeof hotel?.name !== 'string' || !clean(hotel.name) ||
+        !['bookingUrl', 'mapUrl'].every(key => validHotelLink(hotel[key]))
+      )) throw new Error('hotels.json must contain an introduction and hotels with names and valid web links.');
+      const content = [];
+      if (clean(data.introduction)) {
+        const intro = document.createElement('p');
+        intro.textContent = clean(data.introduction);
+        content.push(intro);
+      }
+      if (data.hotels.length) {
+        const list = document.createElement('ul');
+        list.className = 'hotel-list';
+        list.setAttribute('role', 'list');
+        for (const hotel of data.hotels) {
+          const item = document.createElement('li');
+          const name = document.createElement('span');
+          name.className = 'hotel-name'; name.textContent = clean(hotel.name);
+          item.append(name);
+          const links = [['Booking', hotel.bookingUrl], ['Google Maps', hotel.mapUrl]].filter(([, url]) => clean(url));
+          if (links.length) {
+            const group = document.createElement('span'); group.className = 'hotel-links';
+            group.append('[');
+            links.forEach(([label, url], index) => {
+              if (index) group.append(', ');
+              const link = document.createElement('a');
+              link.textContent = label; link.href = webUrl(url);
+              link.target = '_blank'; link.rel = 'noopener noreferrer';
+              link.setAttribute('aria-label', label + ' for ' + clean(hotel.name) + ' (opens in a new tab)');
+              group.append(link);
+            });
+            group.append(']'); item.append(' ', group);
+          }
+          list.append(item);
+        }
+        content.push(list);
+      } else content.push(questionStatus('Hotel recommendations will be added here soon.'));
+      hotelContent.replaceChildren(...content);
+    } catch (error) {
+      const retry = document.createElement('button');
+      retry.type = 'button'; retry.className = 'gold-button'; retry.textContent = 'Try again';
+      retry.addEventListener('click', loadHotels);
+      hotelContent.replaceChildren(questionStatus('We couldn’t load the hotel recommendations. Please try again.'), retry);
+      console.warn('Hotel recommendations could not be loaded.', error);
+    } finally {
+      hotelContent.removeAttribute('aria-busy');
+    }
+  };
+  loadHotels();
+
 
   const menu = document.querySelector('.menu-toggle');
   const navigation = document.getElementById('navigation');

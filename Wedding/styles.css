@@ -26,3 +26,6 @@
 @media(max-width:767px){.travel-arrival .travel-venue{font-size:26px}.travel-arrival #travel-address{font-size:19px}.travel-option h4{font-size:23px}.travel-option p{font-size:19px}}
 
 .travel-option p a{text-decoration:underline;text-underline-offset:.18em}
+
+.accommodation-block{max-width:650px}.hotel-list{list-style:none;padding:0;margin:23px 0 0;text-align:left}.hotel-list li{padding:8px 0;font-size:22px;line-height:1.65;overflow-wrap:anywhere}.hotel-name{font-style:italic}.hotel-links{white-space:nowrap;font-size:19px}.hotel-links a{text-decoration:underline;text-underline-offset:.18em;text-decoration-color:var(--line);padding:3px 0}.hotel-links a:hover{text-decoration-color:var(--gold)}
+@media(max-width:767px){.hotel-list li{font-size:21px}.hotel-links{font-size:18px}}

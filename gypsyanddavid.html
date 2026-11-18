@@ -12,10 +12,10 @@
   <title>David & Gypsy — Our Wedding</title>
   <link rel="icon" href="Wedding/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="Wedding/assets/fonts/fonts.css">
-  <link rel="stylesheet" href="Wedding/styles.css?v=inline-idos-1">
+  <link rel="stylesheet" href="Wedding/styles.css?v=hotel-links-1">
   <link rel="stylesheet" href="Wedding/rsvp.css">
   <script src="Wedding/wedding-config.js?v=attire-1" defer></script>
-  <script src="Wedding/app.js?v=gypsy-and-david-url-1" defer></script>
+  <script src="Wedding/app.js?v=hotel-links-1" defer></script>
   <script src="Wedding/rsvp.js?v=independent-children-meals-20261117" defer></script>
   <link rel="canonical" href="https://miloschewsky.com/gypsyanddavid.html">
 </head>
@@ -91,7 +91,11 @@
         <a id="travel-link" class="text-link" hidden>View directions <span aria-hidden="true">↗</span></a>
       </div>
       <div class="small-divider" aria-hidden="true"></div>
-      <div class="travel-block"><h3>Where to Stay</h3><p id="accommodation-copy">Our favourite places to stay nearby will be added here soon.</p><a id="accommodation-link" class="text-link" hidden>Explore accommodation <span aria-hidden="true">↗</span></a></div>
+      <div class="travel-block accommodation-block" aria-labelledby="accommodation-heading">
+        <h3 id="accommodation-heading">Where to Stay</h3>
+        <!-- Hotel names, introduction, and links are loaded only from Wedding/hotels.json. -->
+        <div id="hotel-content"><p role="status">Loading hotel recommendations…</p></div>
+      </div>
     </section>
 
     <section id="attire" data-page class="content-page" aria-labelledby="attire-heading" hidden>
