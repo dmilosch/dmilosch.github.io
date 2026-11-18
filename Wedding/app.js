@@ -204,7 +204,7 @@
       const content = [];
       if (clean(data.introduction)) {
         const intro = document.createElement('p');
-        intro.textContent = clean(data.introduction);
+        appendLinkedText(intro, data.introduction);
         content.push(intro);
       }
       if (data.hotels.length) {
