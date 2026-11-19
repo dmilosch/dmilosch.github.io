@@ -19,7 +19,7 @@
          "David Miloschewsky",
         {"name": "Supartha Podder", "url": "https://www.suparthapodder.com"}
       ],
-      "links":{"arXiv":"https://arxiv.org/abs/2611.05912", "SBU News":"https://news.stonybrook.edu/computer-science/stony-brook-researchers-david-miloschewsky-and-supartha-podder-resolve-a-decades-old-puzzle-about-the-limits-of-quantum-computing/" ,"Slides":"./Projects/Presentations/welded_trees/welded_trees_main_presentation.html", "Earlier paper (subsumed)": "https://arxiv.org/abs/2609.20651"}
+      "links":{"arXiv":"https://arxiv.org/abs/2611.05912", "SBU News":"https://news.stonybrook.edu/computer-science/stony-brook-researchers-david-miloschewsky-and-supartha-podder-resolve-a-decades-old-puzzle-about-the-limits-of-quantum-computing/" ,"Slides":"./Projects/Presentations/welded_trees/welded_trees_main_presentation.html", "Video":"https://youtu.be/PKIGNm58RAU",  "Earlier paper (subsumed)": "https://arxiv.org/abs/2609.20651"}
     },
     {
       "title":"Promises should be taken seriously: On relativization with promise problems",
